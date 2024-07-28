@@ -8,4 +8,5 @@ use CodeIgniter\Router\RouteCollection;
 $routes->get('/', 'Home::index');
 $routes->get('login', 'Login::index');
 $routes->get('signup', 'Signup::index');
+$routes->post('insertData', 'UserController::insertData');
 

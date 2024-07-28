@@ -38,7 +38,7 @@
         </div>
 
         <div class="end-form hidden" id="endForm">
-            <input type="text" id="useraName" placeholder="Name">
+            <input type="text" id="userName" placeholder="Name">
             <input type="password" id="password" placeholder="password">
             <input type="date" id="dob" placeholder="Date">
             <button id="backBtn" onclick="backToStartForm()"> Back </button>
@@ -94,13 +94,12 @@
         });
 
         function submitData() {
-
+            let userObj = {};
             userObj.userName = document.getElementById("userName").value;
-            userObj.password = document.getElementById("password").value
-            userObj.dob = document.getElementById("dob").value
-            console.log(userObj);
+            userObj.password = document.getElementById("password").value;
+            userObj.dob = document.getElementById("dob").value; 
             const xhr = new XMLHttpRequest();
-            xhr.open("POST", "insertData.php", true);
+            xhr.open("POST", "insertData", true);
             xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
             xhr.onreadystatechange = function() {
                 if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
