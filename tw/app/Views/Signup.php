@@ -2,62 +2,46 @@
 <html>
 <head>
     <title>Twitter Signup Page</title>
-    <link rel="stylesheet" type="text/css" href="styles.css">
-    <style>
-        #signup {
-            width: 400px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        input {
-            display: block;
-            width: 100%;
-            margin-bottom: 10px;
-            padding: 10px;
-        }
-
-        button {
-            padding: 10px 20px;
-        }
-
-        .hidden {
-            display: none;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url()?>/assets/css/signup_style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
 <body>
     <div id="signup">
+        <div class="header">
+            <i class="fa-brands fa-twitter my-icon"></i>
+            <button class="sup-btn" id="next" type="button">Next</button>
+        </div>
+        <div class="title">Create your account</div>
 
         <div class="start-form" id="startForm">
-            <input type="text" id="name" placeholder="Name">
-            <input type="text" id="phone" placeholder="Phone">
-            <button type="button" id="switch">Switch to Email</button>
-            <button type="button" id="next" disabled>Next</button>
+            <div>
+                <input type="text" class="underline-input" id="name" placeholder="Name" maxlength="50">
+                <div class="char-count" id="nameCharCount">0/50</div>
+            </div>
+            <input type="text" class="underline-input" id="phone" placeholder="Phone">
+            <button type="button" id="switch">Use email instead</button>
         </div>
 
         <div class="end-form hidden" id="endForm">
             <input type="text" id="userName" placeholder="Name">
-            <input type="password" id="password" placeholder="password">
-            <input type="date" id="dob" placeholder="Date">
-            <button id="backBtn" onclick="backToStartForm()"> Back </button>
+            <input type="password" id="password" placeholder="Password">
+            <input type="date" id="dob" placeholder="Date of Birth">
+            <button id="backBtn" onclick="backToStartForm()">Back</button>
             <button type="submit" id="submit" onclick="submitData()">Submit</button>
         </div>
-
-
     </div>
 
     <script>
         let userObj = {};
         let endForm = document.getElementById("endForm");
         let startForm = document.getElementById("startForm");
-        console.log(document.getElementById("startForm"), "asfnasl")
 
         function backToStartForm() {
             startForm.classList.remove("hidden");
             endForm.classList.add("hidden");
         }
+
         document.getElementById('switch').addEventListener('click', function() {
             var phoneInput = document.getElementById('phone');
             if (phoneInput.getAttribute('placeholder') === 'Phone') {
@@ -83,7 +67,6 @@
         }
 
         document.getElementById('next').addEventListener('click', function() {
-
             var name = document.getElementById('name').value;
             var phoneOrEmail = document.getElementById('phone').value;
             userObj.name = name;
@@ -93,11 +76,17 @@
             endForm.classList.remove("hidden");
         });
 
+        document.getElementById('name').addEventListener('input', function() {
+            var nameLength = this.value.length;
+            var maxLength = this.getAttribute('maxlength');
+            document.getElementById('nameCharCount').textContent = nameLength + '/' + maxLength + ' characters';
+        });
+
         function submitData() {
-            let userObj = {};
             userObj.userName = document.getElementById("userName").value;
             userObj.password = document.getElementById("password").value;
-            userObj.dob = document.getElementById("dob").value; 
+            userObj.dob = document.getElementById("dob").value;
+
             const xhr = new XMLHttpRequest();
             xhr.open("POST", "insertData", true);
             xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -110,5 +99,6 @@
         }
     </script>
 </body>
-
 </html>
+
+
