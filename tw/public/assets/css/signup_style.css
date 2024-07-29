@@ -29,7 +29,7 @@ body {
   max-height: 50px;
 }
 
-.header button {
+/* .header button {
   position: absolute;
   right: 0;
   top: 0;
@@ -41,7 +41,7 @@ body {
   font-weight: 900;
   font-size: 15px;
   cursor: pointer;
-}
+} */
 
 .title {
   /* text-align: center; */
@@ -88,20 +88,6 @@ body {
   font-size: 15px;
 }
 
-button#submit {
-  background-color: #1da1f2;
-  color: white;
-}
-
-button#backBtn {
-  background-color: #d3d3d3;
-}
-
-button:disabled {
-  background-color: #cccccc;
-  cursor: not-allowed;
-}
-
 .hidden {
   display: none;
 }
@@ -118,4 +104,55 @@ button:disabled {
   margin-top: -10px;
   text-align: right;
   margin-bottom: 10px;
+}
+
+.info-btn {
+  background: none;
+  color: #1da1f2;
+  border: 1px solid #1da1f2;
+  border-radius: 20px;
+  padding: 10px;
+}
+
+.action-btn {
+  padding: 10px;
+  border: none;
+  border-radius: 20px;
+  background-color: #1da1f2;
+  color: white;
+  font-weight: 900;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+
+.landing-login-btn-small {
+  border-radius: 20px;
+  padding: 10px;
+  font-weight: 550;
+  text-decoration: none;
+}
+
+.width-100 {
+  width: 100%;
+}
+
+.block-display {
+  display: block;
+  border-radius: 15px;
+  text-decoration: none;
+  font-weight: 700;
+  text-align: center;
+}
+
+#backBtn {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+#nextBtn {
+  position: absolute;
+  top: 0;
+  right: 0;
 }
