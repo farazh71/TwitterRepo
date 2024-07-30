@@ -1,111 +1,196 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Twitter Signup Page</title>
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url()?>/assets/css/signup_style.css">
+    <link rel="stylesheet" type="text/css" href="<?= base_url('/assets/css/signup_style.css') ?>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-</head>
+    <style>
+        /* Add CSS for the loading screen */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            display: none; /* Initially hidden */
+        }
 
+        .loading-spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border-left-color: #09f;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Add CSS for the success message */
+        .success-message {
+            display: none;
+            position: fixed;
+            top: 20%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #dff0d8;
+            color: #3c763d;
+            padding: 15px;
+            border: 1px solid #d6e9c6;
+            border-radius: 4px;
+            z-index: 1001;
+        }
+    </style>
+</head>
 <body>
     <div id="signup">
         <div class="header">
             <button id="backBtn" class="info-btn hidden" onclick="backToStartForm()">Back</button>
             <i class="fa-brands fa-twitter my-icon"></i>
-            <button class="action-btn" id="nextBtn" type="button">Next</button>
+            <button class="action-btn" id="nextBtn" type="button" disabled>Next</button>
         </div>
         <div class="title">Create your account</div>
 
         <div class="start-form" id="startForm">
             <div>
-                <input type="text" class="underline-input" id="name" placeholder="Name" maxlength="50">
+                <input type="text" class="underline-input" id="name" placeholder="Name" maxlength="50" required>
                 <div class="char-count" id="nameCharCount">0/50</div>
             </div>
-            <input type="text" class="underline-input" id="phone" placeholder="Phone">
+            <input type="text" class="underline-input" id="phone" placeholder="Phone" required>
             <button type="button" id="switch">Use email instead</button>
         </div>
 
         <div class="end-form hidden" id="endForm">
-            <input type="text" class="underline-input" id="userName" placeholder="User Name">
-            <input type="password" class="underline-input"  id="password" placeholder="Password">
-            <input type="date" class="underline-input" id="dob" placeholder="Date of Birth">
+            <input type="text" class="underline-input" id="userName" placeholder="User Name" required>
+            <input type="password" class="underline-input" id="password" placeholder="Password" required>
+            <input type="date" class="underline-input" id="dob" placeholder="Date of Birth" required>
             <textarea class="underline-input" id="bio" placeholder="Enter Bio"></textarea>
             <button type="submit" class="action-btn" id="submit" onclick="submitData()">Submit</button>
         </div>
     </div>
 
+    <!-- Loading screen -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <!-- Success message -->
+    <div class="success-message" id="successMessage">
+        Your account has been successfully created! Redirecting to login...
+    </div>
+
     <script>
-        let userObj = {};
-        let endForm = document.getElementById("endForm");
-        let startForm = document.getElementById("startForm");
-        let nextBtn = document.getElementById("nextBtn");
-        let backBtn = document.getElementById("backBtn");
+        const userObj = {};
+        const endForm = document.getElementById("endForm");
+        const startForm = document.getElementById("startForm");
+        const nextBtn = document.getElementById("nextBtn");
+        const backBtn = document.getElementById("backBtn");
+        const nameInput = document.getElementById("name");
+        const phoneInput = document.getElementById("phone");
+        const loadingOverlay = document.getElementById("loadingOverlay");
+        const successMessage = document.getElementById("successMessage");
+
+        document.getElementById('switch').addEventListener('click', switchPhoneEmail);
+        nameInput.addEventListener('input', updateCharCount);
+        nameInput.addEventListener('input', enableNextButton);
+        phoneInput.addEventListener('input', enableNextButton);
+        nextBtn.addEventListener('click', showEndForm);
 
         function backToStartForm() {
-            startForm.classList.remove("hidden");
-            endForm.classList.add("hidden");
+            toggleForms();
             nextBtn.classList.remove("hidden");
             backBtn.classList.add("hidden");
         }
 
-        document.getElementById('switch').addEventListener('click', function() {
-            var phoneInput = document.getElementById('phone');
-            if (phoneInput.getAttribute('placeholder') === 'Phone') {
-                phoneInput.setAttribute('placeholder', 'Email');
-                phoneInput.setAttribute('type', 'email');
+        function switchPhoneEmail() {
+            if (phoneInput.placeholder === 'Phone') {
+                phoneInput.placeholder = 'Email';
+                phoneInput.type = 'email';
             } else {
-                phoneInput.setAttribute('placeholder', 'Phone');
-                phoneInput.setAttribute('type', 'text');
-            }
-        });
-
-        document.getElementById('name').addEventListener('input', enableNext);
-        document.getElementById('phone').addEventListener('input', enableNext);
-
-        function enableNext() {
-            var name = document.getElementById('name').value;
-            var phone = document.getElementById('phone').value;
-            if (name && phone) {
-                document.getElementById('nextBtn').removeAttribute('disabled');
-            } else {
-                document.getElementById('nextBtn').setAttribute('disabled', 'true');
+                phoneInput.placeholder = 'Phone';
+                phoneInput.type = 'text';
             }
         }
 
-        document.getElementById('nextBtn').addEventListener('click', function() {
-            var name = document.getElementById('name').value;
-            var phoneOrEmail = document.getElementById('phone').value;
-            userObj.name = name;
-            userObj.phoneOrEmail = phoneOrEmail;
+        function updateCharCount() {
+            const nameLength = nameInput.value.length;
+            const maxLength = nameInput.getAttribute('maxlength');
+            document.getElementById('nameCharCount').textContent = `${nameLength}/${maxLength} characters`;
+        }
 
-            startForm.classList.add("hidden");
-            endForm.classList.remove("hidden");
+        function enableNextButton() {
+            const name = nameInput.value;
+            const phone = phoneInput.value;
+            if (name && phone) {
+                nextBtn.removeAttribute('disabled');
+            } else {
+                nextBtn.setAttribute('disabled', 'true');
+            }
+        }
+
+        function showEndForm() {
+            userObj.name = nameInput.value;
+            userObj.phone_or_email = phoneInput.value;
+            toggleForms();
             nextBtn.classList.add("hidden");
             backBtn.classList.remove("hidden");
-        });
+        }
 
-        document.getElementById('name').addEventListener('input', function() {
-            var nameLength = this.value.length;
-            var maxLength = this.getAttribute('maxlength');
-            document.getElementById('nameCharCount').textContent = nameLength + '/' + maxLength + ' characters';
-        });
+        function toggleForms() {
+            startForm.classList.toggle("hidden");
+            endForm.classList.toggle("hidden");
+        }
 
         function submitData() {
-            userObj.userName = document.getElementById("userName").value;
+            userObj.user_name = document.getElementById("userName").value;
             userObj.password = document.getElementById("password").value;
             userObj.dob = document.getElementById("dob").value;
+            userObj.bio = document.getElementById("bio").value;
+
+            showLoading();
 
             const xhr = new XMLHttpRequest();
             xhr.open("POST", "insertData", true);
             xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
             xhr.onreadystatechange = function() {
-                if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-                    console.log(this.responseText);
+                if (this.readyState === XMLHttpRequest.DONE) {
+                    hideLoading();
+                    if (this.status === 200) {
+                        showSuccessMessage();
+                        setTimeout(() => {
+                            window.location.href = 'login'; // Redirect to login page
+                        }, 3000);
+                    } else {
+                        console.log(this)
+                        console.error("An error occurred");
+                    }
                 }
-            }
+            };
             xhr.send("data=" + JSON.stringify(userObj));
+        }
+
+        function showLoading() {
+            loadingOverlay.style.display = 'flex';
+        }
+
+        function hideLoading() {
+            loadingOverlay.style.display = 'none';
+        }
+
+        function showSuccessMessage() {
+            successMessage.style.display = 'block';
         }
     </script>
 </body>
 </html>
-
-

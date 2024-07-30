@@ -2,15 +2,15 @@
 function insertData($conn, $data)
 {
     $name = $data['name'];
-    $phoneOrEmail = $data['phoneOrEmail'];
+    $phone_or_email = $data['phone_or_email'];
     $username = $data['userName'];
     $password = $data['password'];
     $dob = $data['dob'];
-    if (strpos($phoneOrEmail, '@') !== false) {
-        $email = $phoneOrEmail;
+    if (strpos($phone_or_email, '@') !== false) {
+        $email = $phone_or_email;
         $phone = null;
     } else {
-        $phone = $phoneOrEmail;
+        $phone = $phone_or_email;
         $email = null;
     }
     // Prepare statement
