@@ -164,7 +164,7 @@
             xhr.open("POST", "insertData", true);
             xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
             xhr.onreadystatechange = function() {
-                if (this.readyState === XMLHttpRequest.DONE) {
+                if (this.readyState === 4) {
                     hideLoading();
                     if (this.status === 200) {
                         showSuccessMessage();
@@ -172,8 +172,8 @@
                             window.location.href = 'login'; // Redirect to login page
                         }, 3000);
                     } else {
-                        console.log(this)
                         console.error("An error occurred");
+                        console.log(this.responseText); // Log the error response for debugging
                     }
                 }
             };

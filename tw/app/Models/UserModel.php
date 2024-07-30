@@ -9,7 +9,8 @@ class UserModel extends Model
     protected $table = 'Users';
     protected $primaryKey = 'user_id';
     protected $allowedFields = [
-        'username',
+        'user_name',
+        'name',
         'phone_or_email',
         'password',
         'bio',
