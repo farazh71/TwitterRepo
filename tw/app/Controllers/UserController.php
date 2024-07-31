@@ -82,7 +82,7 @@ class UserController extends BaseController
         }
     }
 
-    public function uploadCoverPhoto()
+    public function uploadPhoto()
     {
         $request = service('request');
 
@@ -107,23 +107,33 @@ class UserController extends BaseController
             $decoded = JWT::decode($token, new Key($key, $algorithm));
             $userId = $decoded->sub; // Extract user_id from token
 
-            // Check if the uploaded file is valid
-            $file = $request->getFile('cover_photo');
-            if (!$file || !$file->isValid() || $file->hasMoved()) {
-                return $this->response->setStatusCode(ResponseInterface::HTTP_BAD_REQUEST)
-                    ->setBody('Failed to upload cover photo.');
+            $userModel = new UserModel();
+            $updateData = [];
+
+            // Check for cover photo upload
+            $coverPhoto = $request->getFile('cover_photo');
+            if ($coverPhoto && $coverPhoto->isValid() && !$coverPhoto->hasMoved()) {
+                $newCoverName = $coverPhoto->getRandomName();
+                $coverPhoto->move(WRITEPATH . 'uploads', $newCoverName);
+                $updateData['cover_photo_url'] = base_url('uploads/' . $newCoverName);
             }
 
-            // Move the uploaded file
-            $newName = $file->getRandomName();
-            $file->move(WRITEPATH . 'uploads', $newName);
+            // Check for profile photo upload
+            $profilePhoto = $request->getFile('profile_photo');
+            if ($profilePhoto && $profilePhoto->isValid() && !$profilePhoto->hasMoved()) {
+                $newProfileName = $profilePhoto->getRandomName();
+                $profilePhoto->move(WRITEPATH . 'uploads', $newProfileName);
+                $updateData['profile_photo_url'] = base_url('uploads/' . $newProfileName);
+            }
 
-            // Update user model with new cover photo URL
-            $userModel = new UserModel();
-            $userModel->update($userId, ['cover_photo_url' => base_url('uploads/' . $newName)]);
+            if (!empty($updateData)) {
+                $userModel->update($userId, $updateData);
+                return $this->response->setStatusCode(ResponseInterface::HTTP_OK)
+                    ->setBody('Photos updated successfully.');
+            }
 
-            return $this->response->setStatusCode(ResponseInterface::HTTP_OK)
-                ->setBody('Cover photo updated successfully.');
+            return $this->response->setStatusCode(ResponseInterface::HTTP_BAD_REQUEST)
+                ->setBody('No valid files uploaded.');
         } catch (\Firebase\JWT\ExpiredException $e) {
             // Handle expired token specifically
             return $this->response->setStatusCode(ResponseInterface::HTTP_UNAUTHORIZED)

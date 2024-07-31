@@ -134,6 +134,7 @@
 
         .cover-picture {
             background-color: #1DA1F2;
+            border: 1px solid grey;
         }
 
         .menu ul {
@@ -262,6 +263,26 @@
         .search-input::placeholder {
             color: #888;
         }
+
+        .profile-picture {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: black;
+            position: relative;
+            bottom: 100px;
+            left: 25px;
+        }
+
+        #profileUploadForm {
+            position: relative;
+            top: 61px;
+            text-align: center;
+        }
+
+        #profileUploadForm button {
+            padding: 5px;
+        }
     </style>
 </head>
 
@@ -296,6 +317,12 @@
     </div>
 
     <div class="container">
+        <div class="profile-picture" id="profile-picture">
+            <form id="profileUploadForm">
+                <input type="file" id="profilePhoto" name="profile_photo">
+                <button type="submit">upload profile Photo</button>
+            </form>
+        </div>
         <div class="menu">
             <ul>
                 <li>
@@ -337,25 +364,6 @@
         document.addEventListener('DOMContentLoaded', function () {
             fetchUserData();
 
-            // async function fetchUserData() {
-            //     try {
-            //         const response = await fetch('http://localhost:8080/user/data');
-            //         if (response.ok) {
-            //             const userData = await response.json();
-            //             const coverPictureDiv = document.getElementById('cover-picture');
-            //             if (userData.cover_photo_url) {
-            //                 coverPictureDiv.style.backgroundImage = `url(${userData.cover_photo_url})`;
-            //             } else {
-            //                 coverPictureDiv.style.backgroundImage = 'none';
-            //             }
-            //         } else {
-            //             console.error('Failed to fetch user data.');
-            //         }
-            //     } catch (error) {
-            //         console.error('Error:', error);
-            //     }
-            // }
-
             async function fetchUserData() {
                 try {
                     // Retrieve the JWT token from localStorage
@@ -371,15 +379,21 @@
 
                     if (response.ok) {
                         const userData = await response.json();
-                        console.log(userData,"userDatauserData")
+                        console.log(userData, "userDatauserData")
                         const coverPictureDiv = document.getElementById('cover-picture');
+                        const profilePictureDiv = document.getElementById('profile-picture');
                         if (userData.cover_photo_url) {
                             coverPictureDiv.style.backgroundImage = `url(${userData.cover_photo_url})`;
                         } else {
                             coverPictureDiv.style.backgroundImage = 'none';
                         }
+                        if (userData.profile_photo_url) {
+                            profilePictureDiv.style.backgroundImage = `url(${userData.profile_photo_url})`;
+                        } else {
+                            profilePictureDiv.style.backgroundImage = 'none';
+                        }
                     } else if (response.status === 401) {
-                    console.error('Unauthorized. Please login again.');
+                        console.error('Unauthorized. Please login again.');
                         // Handle the case when the token is invalid or expired
                     } else {
                         console.error('Failed to fetch user data.');
@@ -389,12 +403,10 @@
                 }
             }
 
-            document.getElementById('uploadForm').addEventListener('submit', function (e) {
-                e.preventDefault();
-
-                // Retrieve the file input element and the file
-                var fileInput = document.getElementById('coverPhoto');
+            function prepareImageUpload(type, field) {
+                var fileInput = document.getElementById(type);
                 var file = fileInput.files[0];
+
 
                 if (!file) {
                     alert('Please select a file to upload.');
@@ -409,21 +421,21 @@
                 }
 
                 var formData = new FormData();
-                formData.append('cover_photo', file);
+                formData.append(field, file);
+
 
                 // Create a new XMLHttpRequest
                 var xhr = new XMLHttpRequest();
-                xhr.open('POST', 'http://localhost:8080/upload-cover-photo', true);
+                xhr.open('POST', 'http://localhost:8080/upload-photo', true);
 
                 // Set the Authorization header with the JWT token
                 xhr.setRequestHeader('Authorization', 'Bearer ' + token);
-
                 // Handle the response
                 xhr.onreadystatechange = function () {
                     if (xhr.readyState === 4) {
                         if (xhr.status === 200) {
-                            console.log('Cover photo uploaded successfully:', xhr.responseText);
-                            alert('Cover photo updated successfully.');
+                            console.log('Image uploaded successfully:', xhr.responseText);
+                            alert('Image updated successfully.');
                             // window.location.href = 'main';
                             fetchUserData();
                         } else if (xhr.status === 401) {
@@ -431,13 +443,23 @@
                             // Optionally, redirect to login page
                             window.location.href = 'login.html';
                         } else {
-                            alert('Failed to upload cover photo.');
+                            alert('Failed to upload Image.');
                         }
                     }
                 };
 
                 // Send the form data
                 xhr.send(formData);
+            }
+
+            document.getElementById('uploadForm').addEventListener('submit', function (e) {
+                e.preventDefault();
+                prepareImageUpload('coverPhoto', 'cover_photo')
+            });
+
+            document.getElementById('profileUploadForm').addEventListener('submit', function (e) {
+                e.preventDefault();
+                prepareImageUpload('profilePhoto', 'profile_photo')
             });
 
         });
