@@ -12,3 +12,6 @@ $routes->get('signup', 'Signup::index');
 $routes->post('insertData', 'UserController::insertData');
 $routes->post('loginUser', 'LoginController::loginUser');
 $routes->post('verifyToken', 'LoginController::verifyToken');
+$routes->get('user/data', 'UserController::getUserData');
+$routes->post('upload-cover-photo', 'UserController::uploadCoverPhoto');
+$routes->get('uploads/(:segment)', 'FileController::serve/$1');

@@ -19,8 +19,7 @@
         <div class="right-section">
             <div class="width-50">
                 <div class="header">
-                    <i class="fa-brands fa-twitter twitter-logo"></i>
-                    <!-- <img src="../../assets/twitter.webp" alt="Twitter Logo"> -->
+                    <i class="fa-brands fa-twitter my-icon"></i>
                     <a href="./login" class="info-btn landing-login-btn-small">Login</a>
                 </div>
                 <div class="landing-title">

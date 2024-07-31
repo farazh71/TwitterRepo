@@ -3,11 +3,15 @@
 
 <head>
     <title>Twitter Landing Page</title>
-    <link rel="stylesheet" type="text/css" href="styles.css">
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <!-- <link rel="stylesheet" type="text/css" href="styles.css"> -->
+    <!-- <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>/assets/css/home_style.css"> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+        integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         body {
             font-family: Arial, sans-serif;
+            margin: 0;
         }
 
         .container {
@@ -40,7 +44,6 @@
         button {
             border-radius: 20px;
             padding: 10px 20px;
-            margin-top: 20px;
         }
 
         .left-section {
@@ -71,10 +74,16 @@
         }
 
         .action-btn {
-            background-color: #1DA1F2;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            background-color: #1da1f2;
             color: white;
-            border: 0;
+            font-weight: 900;
+            font-size: 15px;
+            cursor: pointer;
         }
+
 
         .width-50 {
             width: 50%;
@@ -91,7 +100,6 @@
         .nav-bar {
             display: flex;
             justify-content: space-between;
-            padding: 20px;
         }
 
         .left-nav,
@@ -101,7 +109,6 @@
             align-items: center;
         }
 
-        .left-nav a,
         .right-nav button {
             margin-right: 20px;
         }
@@ -142,29 +149,152 @@
         .edit-profile button {
             padding: 10px 20px;
         }
+
+        .left-nav {
+            display: flex;
+            flex-direction: row;
+            /* Align items horizontally */
+            justify-content: space-around;
+            /* Space out items */
+            border-bottom: 1px solid #e1e4e8;
+            /* Optional: bottom border */
+        }
+
+        .left-nav a {
+            text-decoration: none;
+            color: #000;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+            /* Padding around the links */
+        }
+
+        .left-nav a i {
+            margin-right: 10px;
+        }
+
+        .left-nav a:hover {
+            background-color: #e1e4e8;
+            /* Optional: background color on hover */
+            border-radius: 5px;
+            /* Optional: rounded corners on hover */
+        }
+
+        .search-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            padding: 5px 10px;
+            background-color: #f8f9fa;
+        }
+
+        .search-icon {
+            margin-right: 10px;
+            color: #888;
+        }
+
+        .search-input {
+            border: none;
+            outline: none;
+            background: none;
+            font-size: 16px;
+            width: 100%;
+        }
+
+        .search-input::placeholder {
+            color: #888;
+        }
+
+        .profile-photo-section {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: blue;
+            margin: 0 10px;
+        }
+
+        .cover-picture {
+            background-color: #1DA1F2;
+            height: 200px;
+            width: 100%;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .cover-picture .change-cover-btn {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background-color: #fff;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .search-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            padding: 5px 10px;
+            background-color: #f8f9fa;
+        }
+
+        .search-icon {
+            margin-right: 10px;
+            color: #888;
+        }
+
+        .search-input {
+            border: none;
+            outline: none;
+            background: none;
+            font-size: 16px;
+            width: 100%;
+        }
+
+        .search-input::placeholder {
+            color: #888;
+        }
     </style>
 </head>
 
 <body>
     <div class="nav-bar">
         <div class="left-nav">
-            <a href="#">Home</a>
-            <a href="#">Moments</a>
-            <a href="#">Notifications</a>
-            <a href="#">Messages</a>
+            <a href="#"><i class="fa-solid fa-house icon-style"></i> Home</a>
+            <a href="#"><i class="fa-solid fa-bolt icon-style"></i> Moments</a>
+            <a href="#"><i class="fa-solid fa-bell icon-style"></i> Notifications</a>
+            <a href="#"><i class="fa-solid fa-envelope icon-style"></i> Messages</a>
         </div>
         <div class="middle-nav">
             <img src="twitter-icon.png" alt="Twitter Icon">
         </div>
         <div class="right-nav">
-            <input type="text" placeholder="Search">
-            <img src="user-image.png" alt="User Image">
-            <button>Tweet</button>
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Search Twitter">
+                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            </div>
+            <div class="profile-photo-section">
+
+            </div>
+            <!-- <img src="user-image.png" alt="User Image"> -->
+            <button class="action-btn">Tweet</button>
         </div>
     </div>
-    <div class="height-200 width-100 cover-picture">
-
+    <div class="height-200 width-100 cover-picture" id="cover-picture">
+        <form id="uploadForm">
+            <input type="file" id="coverPhoto" name="cover_photo">
+            <button type="submit">Upload Cover Photo</button>
+        </form>
     </div>
+
     <div class="container">
         <div class="menu">
             <ul>
@@ -203,6 +333,115 @@
         </div>
 
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            fetchUserData();
+
+            // async function fetchUserData() {
+            //     try {
+            //         const response = await fetch('http://localhost:8080/user/data');
+            //         if (response.ok) {
+            //             const userData = await response.json();
+            //             const coverPictureDiv = document.getElementById('cover-picture');
+            //             if (userData.cover_photo_url) {
+            //                 coverPictureDiv.style.backgroundImage = `url(${userData.cover_photo_url})`;
+            //             } else {
+            //                 coverPictureDiv.style.backgroundImage = 'none';
+            //             }
+            //         } else {
+            //             console.error('Failed to fetch user data.');
+            //         }
+            //     } catch (error) {
+            //         console.error('Error:', error);
+            //     }
+            // }
+
+            async function fetchUserData() {
+                try {
+                    // Retrieve the JWT token from localStorage
+                    const token = localStorage.getItem('jwtToken');
+
+                    const response = await fetch('http://localhost:8080/user/data', {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': `Bearer ${token}`, // Include the JWT token in the Authorization header
+                            'Content-Type': 'application/json'
+                        }
+                    });
+
+                    if (response.ok) {
+                        const userData = await response.json();
+                        console.log(userData,"userDatauserData")
+                        const coverPictureDiv = document.getElementById('cover-picture');
+                        if (userData.cover_photo_url) {
+                            coverPictureDiv.style.backgroundImage = `url(${userData.cover_photo_url})`;
+                        } else {
+                            coverPictureDiv.style.backgroundImage = 'none';
+                        }
+                    } else if (response.status === 401) {
+                    console.error('Unauthorized. Please login again.');
+                        // Handle the case when the token is invalid or expired
+                    } else {
+                        console.error('Failed to fetch user data.');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                }
+            }
+
+            document.getElementById('uploadForm').addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                // Retrieve the file input element and the file
+                var fileInput = document.getElementById('coverPhoto');
+                var file = fileInput.files[0];
+
+                if (!file) {
+                    alert('Please select a file to upload.');
+                    return;
+                }
+
+                // Retrieve the JWT token from localStorage
+                var token = localStorage.getItem('jwtToken');
+                if (!token) {
+                    alert('No JWT token found. Please log in.');
+                    return;
+                }
+
+                var formData = new FormData();
+                formData.append('cover_photo', file);
+
+                // Create a new XMLHttpRequest
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', 'http://localhost:8080/upload-cover-photo', true);
+
+                // Set the Authorization header with the JWT token
+                xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+
+                // Handle the response
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4) {
+                        if (xhr.status === 200) {
+                            console.log('Cover photo uploaded successfully:', xhr.responseText);
+                            alert('Cover photo updated successfully.');
+                            // window.location.href = 'main';
+                            fetchUserData();
+                        } else if (xhr.status === 401) {
+                            alert('Unauthorized. Please log in again.');
+                            // Optionally, redirect to login page
+                            window.location.href = 'login.html';
+                        } else {
+                            alert('Failed to upload cover photo.');
+                        }
+                    }
+                };
+
+                // Send the form data
+                xhr.send(formData);
+            });
+
+        });
+    </script>
 </body>
 
 </html>
