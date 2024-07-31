@@ -19,8 +19,27 @@ class UserModel extends Model
         'created_at'
     ];
 
-    // If you want to automatically handle timestamps
+    // Automatically handle timestamps
     protected $useTimestamps = true;
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at'; // If you have an updated_at field
+
+    // Validation rules
+    protected $validationRules = [
+        'user_name' => 'required|is_unique[Users.user_name]',
+        'name' => 'required',
+        'phone_or_email' => 'required',
+        'password' => 'required',
+        'bio' => 'required'
+    ];
+
+    // Validation messages
+    protected $validationMessages = [
+        'user_name' => [
+            'is_unique' => 'The username is already taken. Please choose a different username.'
+        ]
+    ];
+
+    // Skip validation if the data is empty
+    protected $skipValidation = false;
 }

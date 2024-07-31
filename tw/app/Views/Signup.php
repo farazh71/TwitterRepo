@@ -58,8 +58,10 @@
 
         /* Highlighting for error state */
         .underline-input.error {
-            border-color: #f00; /* Change border color to red */
-            background-color: #ffe6e6; /* Light red background color */
+            border-color: #f00;
+            /* Change border color to red */
+            background-color: #ffe6e6;
+            /* Light red background color */
         }
     </style>
 </head>
@@ -83,7 +85,8 @@
         </div>
 
         <div class="end-form hidden" id="endForm">
-            <input type="text" class="underline-input" id="userName" placeholder="User Name" onchange="removeError()" required>
+            <input type="text" class="underline-input" id="userName" placeholder="User Name" onchange="removeError()"
+                required>
             <input type="password" class="underline-input" id="password" placeholder="Password" required>
             <input type="date" class="underline-input" id="dob" placeholder="Date of Birth" required>
             <textarea class="underline-input" id="bio" placeholder="Enter Bio"></textarea>
@@ -124,7 +127,7 @@
             backBtn.classList.add("hidden");
         }
 
-        function removeError (){
+        function removeError() {
             document.getElementById("userName").classList.remove('error');
         }
 
@@ -168,12 +171,11 @@
         }
 
         function submitData() {
-            const userObj = {
-                user_name: document.getElementById("userName").value,
-                password: document.getElementById("password").value,
-                dob: document.getElementById("dob").value,
-                bio: document.getElementById("bio").value
-            };
+
+            userObj.user_name = document.getElementById("userName").value,
+            userObj.password = document.getElementById("password").value,
+            userObj.dob = document.getElementById("dob").value,
+            userObj.bio = document.getElementById("bio").value
 
             showLoading();
 

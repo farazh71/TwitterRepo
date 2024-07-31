@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Controllers;
 
 use App\Models\UserModel;
@@ -24,7 +23,10 @@ class UserController extends BaseController
                                       ->setBody('Failed to insert data.');
             }
         } catch (DatabaseException $e) {
-            if ($e->getCode() == 1062) { // MySQL error code for duplicate entry
+            // Log the exception to understand the issue
+            log_message('error', 'DatabaseException: ' . $e->getMessage());
+            
+            if (strpos($e->getMessage(), '1062') !== false) { // Check for duplicate entry error code
                 return $this->response->setStatusCode(ResponseInterface::HTTP_CONFLICT)
                                       ->setBody('Duplicate entry for username.');
             } else {
