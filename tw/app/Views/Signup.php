@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Twitter Signup Page</title>
     <link rel="stylesheet" type="text/css" href="<?= base_url('/assets/css/signup_style.css') ?>">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+        integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         /* Add CSS for the loading screen */
         .loading-overlay {
@@ -19,7 +22,8 @@
             justify-content: center;
             align-items: center;
             z-index: 1000;
-            display: none; /* Initially hidden */
+            display: none;
+            /* Initially hidden */
         }
 
         .loading-spinner {
@@ -51,8 +55,15 @@
             border-radius: 4px;
             z-index: 1001;
         }
+
+        /* Highlighting for error state */
+        .underline-input.error {
+            border-color: #f00; /* Change border color to red */
+            background-color: #ffe6e6; /* Light red background color */
+        }
     </style>
 </head>
+
 <body>
     <div id="signup">
         <div class="header">
@@ -72,7 +83,7 @@
         </div>
 
         <div class="end-form hidden" id="endForm">
-            <input type="text" class="underline-input" id="userName" placeholder="User Name" required>
+            <input type="text" class="underline-input" id="userName" placeholder="User Name" onchange="removeError()" required>
             <input type="password" class="underline-input" id="password" placeholder="Password" required>
             <input type="date" class="underline-input" id="dob" placeholder="Date of Birth" required>
             <textarea class="underline-input" id="bio" placeholder="Enter Bio"></textarea>
@@ -111,6 +122,10 @@
             toggleForms();
             nextBtn.classList.remove("hidden");
             backBtn.classList.add("hidden");
+        }
+
+        function removeError (){
+            document.getElementById("userName").classList.remove('error');
         }
 
         function switchPhoneEmail() {
@@ -153,24 +168,29 @@
         }
 
         function submitData() {
-            userObj.user_name = document.getElementById("userName").value;
-            userObj.password = document.getElementById("password").value;
-            userObj.dob = document.getElementById("dob").value;
-            userObj.bio = document.getElementById("bio").value;
+            const userObj = {
+                user_name: document.getElementById("userName").value,
+                password: document.getElementById("password").value,
+                dob: document.getElementById("dob").value,
+                bio: document.getElementById("bio").value
+            };
 
             showLoading();
 
             const xhr = new XMLHttpRequest();
             xhr.open("POST", "insertData", true);
             xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            xhr.onreadystatechange = function() {
+            xhr.onreadystatechange = function () {
                 if (this.readyState === 4) {
                     hideLoading();
                     if (this.status === 200) {
-                        showSuccessMessage();
+                        showSuccessMessage("Your account has been successfully created! Redirecting to login...");
                         setTimeout(() => {
                             window.location.href = 'login'; // Redirect to login page
                         }, 3000);
+                    } else if (this.status === 409) { // HTTP status code for conflict (duplicate entry)
+                        showSuccessMessage("Username already exists. Please choose a different username.");
+                        highlightInput('userName');
                     } else {
                         console.error("An error occurred");
                         console.log(this.responseText); // Log the error response for debugging
@@ -188,9 +208,20 @@
             loadingOverlay.style.display = 'none';
         }
 
-        function showSuccessMessage() {
+        function showSuccessMessage(message) {
             successMessage.style.display = 'block';
+            successMessage.innerText = message;
+            setTimeout(() => {
+                successMessage.style.display = 'none';
+            }, 3000);
+        }
+
+        function highlightInput(inputId) {
+            const input = document.getElementById(inputId);
+            input.classList.add('error');
+            input.focus();
         }
     </script>
 </body>
+
 </html>
