@@ -39,6 +39,28 @@
 
         </div>
     </div>
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        console.log("nfkndsfkndskn")
+        const token = localStorage.getItem('jwtToken');
+        if (token) {
+            verifyToken(token);
+        }
+    });
+
+    function verifyToken(token) {
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", "<?php echo base_url()?>/verifyToken", true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function () {
+            if (this.readyState === 4 && this.status === 200) {
+                window.location.href = 'main';
+            }
+        };
+        xhr.send("token=" + token);
+    }
+</script>
+
 </body>
 
 </html>

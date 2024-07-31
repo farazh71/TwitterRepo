@@ -173,9 +173,9 @@
         function submitData() {
 
             userObj.user_name = document.getElementById("userName").value,
-            userObj.password = document.getElementById("password").value,
-            userObj.dob = document.getElementById("dob").value,
-            userObj.bio = document.getElementById("bio").value
+                userObj.password = document.getElementById("password").value,
+                userObj.dob = document.getElementById("dob").value,
+                userObj.bio = document.getElementById("bio").value
 
             showLoading();
 
@@ -222,6 +222,26 @@
             const input = document.getElementById(inputId);
             input.classList.add('error');
             input.focus();
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            console.log("nfkndsfkndskn")
+            const token = localStorage.getItem('jwtToken');
+            if (token) {
+                verifyToken(token);
+            }
+        });
+
+        function verifyToken(token) {
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", "<?php echo base_url() ?>/verifyToken", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function () {
+                if (this.readyState === 4 && this.status === 200) {
+                    window.location.href = 'main';
+                }
+            };
+            xhr.send("token=" + token);
         }
     </script>
 </body>

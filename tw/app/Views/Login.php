@@ -9,51 +9,53 @@
     <link rel="stylesheet" href="<?php echo base_url() ?>/assets/css/login_style.css">
 </head>
 <style>
-        /* Add CSS for the loading screen */
-        .loading-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.8);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            display: none; /* Initially hidden */
-        }
+    /* Add CSS for the loading screen */
+    .loading-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.8);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        display: none;
+        /* Initially hidden */
+    }
 
-        .loading-spinner {
-            border: 4px solid rgba(0, 0, 0, 0.1);
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            border-left-color: #09f;
-            animation: spin 1s linear infinite;
-        }
+    .loading-spinner {
+        border: 4px solid rgba(0, 0, 0, 0.1);
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        border-left-color: #09f;
+        animation: spin 1s linear infinite;
+    }
 
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
+    @keyframes spin {
+        to {
+            transform: rotate(360deg);
         }
+    }
 
-        /* Add CSS for the success message */
-        .success-message {
-            display: none;
-            position: fixed;
-            top: 20%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: #dff0d8;
-            color: #3c763d;
-            padding: 15px;
-            border: 1px solid #d6e9c6;
-            border-radius: 4px;
-            z-index: 1001;
-        }
+    /* Add CSS for the success message */
+    .success-message {
+        display: none;
+        position: fixed;
+        top: 20%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: #dff0d8;
+        color: #3c763d;
+        padding: 15px;
+        border: 1px solid #d6e9c6;
+        border-radius: 4px;
+        z-index: 1001;
+    }
 </style>
+
 <body>
     <!-- Your HTML code goes here -->
     <div class="login-container">
@@ -89,7 +91,7 @@
             xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
             xhr.onreadystatechange = function () {
                 if (this.readyState === 4) {
-                    console.log(JSON.parse(this.response),"anfkndskfn")
+                    console.log(JSON.parse(this.response), "anfkndskfn")
                     hideLoading();
                     if (this.status === 200) {
                         showSuccessMessage();
@@ -119,6 +121,25 @@
 
         function showSuccessMessage() {
             successMessage.style.display = 'block';
+        }
+        document.addEventListener('DOMContentLoaded', function () {
+            console.log("nfkndsfkndskn")
+            const token = localStorage.getItem('jwtToken');
+            if (token) {
+                verifyToken(token);
+            }
+        });
+
+        function verifyToken(token) {
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", "<?php echo base_url() ?>/verifyToken", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function () {
+                if (this.readyState === 4 && this.status === 200) {
+                    window.location.href = 'main';
+                }
+            };
+            xhr.send("token=" + token);
         }
     </script>
 </body>

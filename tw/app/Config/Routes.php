@@ -11,4 +11,4 @@ $routes->get('main', 'Main::index');
 $routes->get('signup', 'Signup::index');
 $routes->post('insertData', 'UserController::insertData');
 $routes->post('loginUser', 'LoginController::loginUser');
-
+$routes->post('verifyToken', 'LoginController::verifyToken');
