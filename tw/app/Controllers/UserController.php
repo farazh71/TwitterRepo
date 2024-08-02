@@ -148,4 +148,99 @@ class UserController extends BaseController
                 ->setBody('Invalid or expired token.');
         }
     }
+
+    public function updateProfile()
+    {
+        $request = service('request');
+    
+        // Extract the JWT token from the Authorization header
+        $authHeader = $request->getServer('HTTP_AUTHORIZATION');
+        if (!$authHeader) {
+            return $this->response->setStatusCode(ResponseInterface::HTTP_UNAUTHORIZED)
+                ->setJSON(['message' => 'Authorization header not found.']);
+        }
+    
+        list($token) = sscanf($authHeader, 'Bearer %s');
+        if (!$token) {
+            return $this->response->setStatusCode(ResponseInterface::HTTP_UNAUTHORIZED)
+                ->setJSON(['message' => 'Bearer token not found.']);
+        }
+    
+        try {
+            $key = getenv('SECRET_KEY'); // Retrieve the secret key from environment
+            $algorithm = 'HS256';
+            $decoded = JWT::decode($token, new Key($key, $algorithm));
+            $userId = $decoded->sub; // Extract user_id from token
+        } catch (\Exception $e) {
+            return $this->response->setStatusCode(ResponseInterface::HTTP_UNAUTHORIZED)
+                ->setJSON(['message' => 'Invalid token.']);
+        }
+    
+        $data = $request->getPost('data');
+    
+        if (!$data) {
+            return $this->response->setStatusCode(ResponseInterface::HTTP_BAD_REQUEST)
+                ->setJSON(['message' => 'No data provided.']);
+        }
+    
+        $dataArray = json_decode($data, true); // Decode JSON to associative array
+    
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            return $this->response->setStatusCode(ResponseInterface::HTTP_BAD_REQUEST)
+                ->setJSON(['message' => 'Invalid JSON data.']);
+        }
+    
+        $updateData = [
+            'user_id' => $userId,
+            'Name' => $dataArray['Name'] ?? null,
+            'bio' => $dataArray['bio'] ?? null,
+            'date_of_birth' => $dataArray['date_of_birth'] ?? null,
+            'website' => $dataArray['website'] ?? null,
+            'location' => $dataArray['location'] ?? null,
+            'user_name' => $dataArray['user_name'] ?? null,
+        ];
+    
+        // Remove null values from $updateData
+        $updateData = array_filter($updateData, function ($value) {
+            return !is_null($value);
+        });
+    
+        $userModel = new UserModel();
+    
+        // Custom validation for unique username
+        if (isset($updateData['user_name'])) {
+            $existingUser = $userModel->where('user_name', $updateData['user_name'])
+                                      ->where('user_id !=', $userId)
+                                      ->first();
+    
+            if ($existingUser) {
+                return $this->response->setStatusCode(ResponseInterface::HTTP_CONFLICT)
+                    ->setJSON(['message' => 'The username is already taken. Please choose a different username.']);
+            }
+        }
+    
+        try {
+            if ($userModel->update($userId, $updateData)) {
+                return $this->response->setStatusCode(ResponseInterface::HTTP_OK)
+                    ->setJSON(['message' => 'User data updated successfully.']);
+            } else {
+                log_message('error', 'Failed to update user data. Errors: ' . json_encode($userModel->errors()));
+                return $this->response->setStatusCode(ResponseInterface::HTTP_BAD_REQUEST)
+                    ->setJSON(['message' => 'Failed to update user data.', 'errors' => $userModel->errors()]);
+            }
+        } catch (DatabaseException $e) {
+            log_message('error', 'DatabaseException: ' . $e->getMessage());
+    
+            if (strpos($e->getMessage(), '1062') !== false) {
+                return $this->response->setStatusCode(ResponseInterface::HTTP_CONFLICT)
+                    ->setJSON(['message' => 'Duplicate entry.']);
+            } else {
+                return $this->response->setStatusCode(ResponseInterface::HTTP_INTERNAL_SERVER_ERROR)
+                    ->setJSON(['message' => 'An unexpected error occurred.']);
+            }
+        }
+    }
+    
+    
+    
 }

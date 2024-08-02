@@ -16,7 +16,10 @@ class LoginModel extends Model
         'bio',
         'profile_photo_url',
         'cover_photo_url',
-        'created_at'
+        'created_at',
+        'date_of_birth',
+        'website',
+        'location'
     ];
     public function getUserByUsername($username)
     {

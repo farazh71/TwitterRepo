@@ -174,7 +174,7 @@
 
             userObj.user_name = document.getElementById("userName").value,
                 userObj.password = document.getElementById("password").value,
-                userObj.dob = document.getElementById("dob").value,
+                userObj.date_of_birth = document.getElementById("dob").value,
                 userObj.bio = document.getElementById("bio").value
 
             showLoading();
@@ -225,7 +225,6 @@
         }
 
         document.addEventListener('DOMContentLoaded', function () {
-            console.log("nfkndsfkndskn")
             const token = localStorage.getItem('jwtToken');
             if (token) {
                 verifyToken(token);

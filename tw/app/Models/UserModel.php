@@ -10,27 +10,33 @@ class UserModel extends Model
     protected $primaryKey = 'user_id';
     protected $allowedFields = [
         'user_name',
-        'name',
+        'Name', // Note the capital 'N'
         'phone_or_email',
         'password',
         'bio',
         'profile_photo_url',
         'cover_photo_url',
-        'created_at'
+        'created_at',
+        'date_of_birth',
+        'website',
+        'location'
     ];
 
     // Automatically handle timestamps
     protected $useTimestamps = true;
     protected $createdField  = 'created_at';
-    protected $updatedField  = 'updated_at'; // If you have an updated_at field
+    protected $updatedField  = 'updated_at'; // Ensure this field exists in your schema
 
     // Validation rules
     protected $validationRules = [
-        'user_name' => 'required|is_unique[Users.user_name]',
-        'name' => 'required',
+        'user_name' => 'required',
+        'Name' => 'required',
         'phone_or_email' => 'required',
         'password' => 'required',
-        'bio' => 'required'
+        'bio' => 'required',
+        'date_of_birth' => 'permit_empty',
+        'website' => 'permit_empty',
+        'location' => 'permit_empty',
     ];
 
     // Validation messages

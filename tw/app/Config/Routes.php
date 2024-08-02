@@ -15,3 +15,4 @@ $routes->post('verifyToken', 'LoginController::verifyToken');
 $routes->get('user/data', 'UserController::getUserData');
 $routes->post('upload-photo', 'UserController::uploadPhoto');
 $routes->get('uploads/(:segment)', 'FileController::serve/$1');
+$routes->post('updateProfile', 'UserController::updateProfile');
