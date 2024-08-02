@@ -28,6 +28,12 @@
             <div id="profile-photo-section"></div>
             <!-- <img src="user-image.png" alt="User Image"> -->
             <button class="action-btn">Tweet</button>
+            <div id="action-items" onclick="toggleDropdown()"></div>
+            <div class="relative">
+                <div id="dropdown-menu" class="dropdown hidden">
+                    <button onclick="signOut()">Sign Out</button>
+                </div>
+            </div>
         </div>
     </div>
     <div class="height-200 width-100 cover-picture parent" id="cover-picture">
@@ -64,9 +70,10 @@
             </ul>
         </div>
         <div class="edit-profile">
-            <button class="default-btn" id="edit-profile-btn" onclick="showEditProfileForm()">Edit profile</button>
+            <button class="default-btn" id="edit-profile-btn" onclick="toggleEditProfileForm(true)">Edit
+                profile</button>
             <div id="save-profile-changes" class="hidden">
-                <button class="info-btn black-clr">Cancel</button>
+                <button class="info-btn black-clr" onclick="closeUpdateBox()">Cancel</button>
                 <button class="info-btn blue-clr" onclick="submitData()">Save changes</button>
             </div>
         </div>
@@ -100,7 +107,23 @@
             </div>
         </div>
         <div class="follow-section">
-            <h3>Who to follow</h3>
+            <div class="follow-heading">
+                <p>
+                <h2 class="inline">Who to follow</h2> <span class="v-super"> . </span>
+                <button id="refrestFollowList"
+                    class="anchor-btn v-bottom">Refresh</button> <span class="v-super">.</span> <button
+                    class="anchor-btn v-bottom"> View all</button></h3>
+            </div>
+            <div id="follow-body">
+                <!-- <div class="follow-card">
+                    <div id="follow-photo-section"></div>
+                    <div id="follow-user-list">
+                        <h3 class="follow-user-name">Dr Areeba Shakeel</h3>
+                        <button class="follow-btn">Follow</button>
+                    </div>
+                    <div id="follow-remove-user"></div>
+                </div> -->
+            </div>
         </div>
 
     </div>
@@ -113,21 +136,28 @@
     <div class="success-message" id="successMessage">
     </div>
     <script>
+        let followUserList = [];
+        function closeUpdateBox() {
+            document.getElementById("save-profile-changes").classList.add("hidden");
+            document.getElementById("edit-profile-btn").classList.remove("hidden");
+            toggleEditProfileForm(false);
+        }
+
         function submitData() {
             const userObj = {};
             userObj.Name = document.getElementById("firstNameLastName").value,
-            userObj.bio = document.getElementById("bioProfile").value,
-            userObj.date_of_birth = document.getElementById("dob").value,
-            userObj.website = document.getElementById("website").value
+                userObj.bio = document.getElementById("bioProfile").value,
+                userObj.date_of_birth = document.getElementById("dob").value,
+                userObj.website = document.getElementById("website").value
             userObj.location = document.getElementById("location").value
             userObj.user_name = document.getElementById("userName").value
 
             showLoading();
             var token = localStorage.getItem('jwtToken');
-                if (!token) {
-                    alert('No JWT token found. Please log in.');
-                    return;
-                }
+            if (!token) {
+                alert('No JWT token found. Please log in.');
+                return;
+            }
             const xhr = new XMLHttpRequest();
             xhr.open("POST", "updateProfile", true);
             xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -165,18 +195,113 @@
                 successMessage.style.display = 'none';
             }, 3000);
         }
-        function showEditProfileForm() {
+        function toggleEditProfileForm(editProfile) {
             const viewProfile = document.getElementById("view-profile");
-            const editProfile = document.getElementById("edit-profile");
+            const editProfileSection = document.getElementById("edit-profile");
             const editProfileBtn = document.getElementById("edit-profile-btn");
             const saveProfile = document.getElementById("save-profile-changes");
-            viewProfile.classList.add("hidden");
-            editProfile.classList.remove("hidden");
-            editProfileBtn.classList.add("hidden");
-            saveProfile.classList.remove("hidden")
+
+            if (editProfile) {
+                viewProfile.classList.add("hidden");
+                editProfileSection.classList.remove("hidden");
+                editProfileBtn.classList.add("hidden");
+                saveProfile.classList.remove("hidden");
+            } else {
+                viewProfile.classList.remove("hidden");
+                editProfileSection.classList.add("hidden");
+                editProfileBtn.classList.remove("hidden");
+                saveProfile.classList.add("hidden");
+            }
         }
+        function toggleDropdown() {
+            const dropdownMenu = document.getElementById("dropdown-menu");
+            dropdownMenu.classList.toggle("hidden");
+
+            document.addEventListener('click', function (event) {
+                if (!dropdownMenu.contains(event.target) && !event.target.matches('#action-items')) {
+                    dropdownMenu.classList.add('hidden');
+                }
+            });
+        }
+
+        function signOut() {
+            localStorage.removeItem('jwtToken');
+            window.location.href = '/login';
+        }
+
         document.addEventListener('DOMContentLoaded', function () {
             fetchUserData();
+            fetchFollowUsers();
+
+            async function fetchFollowUsers() {
+                const token = localStorage.getItem('jwtToken');
+                try {
+                    const response = await fetch('http://localhost:8081/user/fetchFollowUsers', {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': `Bearer ${token}`, // Include the JWT token in the Authorization header
+                            'Content-Type': 'application/json'
+                        }
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+
+                    followUserList = await response.json();  
+                    renderFollowList();
+
+                } catch (error) {
+                    console.error('Error fetching users:', error);
+                }
+            }
+      
+            function removeFromFollowList(id){
+                const filteredUsers = followUserList.filter(user => user.user_id !== id);
+                followUserList = [...filteredUsers]; 
+                renderFollowList(followUserList);
+            }
+
+            document.getElementById('refrestFollowList').addEventListener('click', function (e) {
+                e.preventDefault();
+                fetchFollowUsers();
+            });
+
+            function renderFollowList (){
+                const followSection = document.getElementById("follow-body");
+                followSection.innerHTML = ""; // Clear any existing content
+                followUserList?.forEach(user => {
+                        const followCard = document.createElement("div");
+                        followCard.classList.add("follow-card");
+
+                        const profilePhoto = document.createElement("div");
+                        profilePhoto.id = "follow-photo-section";
+                        profilePhoto.style.backgroundImage = `url(${user.profile_photo_url})`;
+
+                        const userList = document.createElement("div");
+                        userList.id = "follow-user-list";
+
+                        const userName = document.createElement("h3");
+                        userName.classList.add("follow-user-name");
+                        userName.innerText = user.Name;
+
+                        const followBtn = document.createElement("button");
+                        followBtn.classList.add("follow-btn");
+                        followBtn.innerText = "Follow";
+
+                        const closeBtn = document.createElement("div");
+                        closeBtn.id = "follow-remove-user";
+                        closeBtn.addEventListener('click', () => removeFromFollowList(user.user_id));
+                        userList.appendChild(userName);
+                        userList.appendChild(followBtn);
+
+                        followCard.appendChild(profilePhoto);
+                        followCard.appendChild(userList);
+                        followCard.appendChild(closeBtn);
+
+                        followSection.appendChild(followCard);
+                    });
+            }
             async function fetchUserData() {
                 try {
                     // Retrieve the JWT token from localStorage
@@ -192,7 +317,6 @@
 
                     if (response.ok) {
                         const userData = await response.json();
-                        console.log(userData, "userDatauserData")
                         const coverPictureDiv = document.getElementById('cover-picture');
                         const profilePictureDiv = document.getElementById('profile-picture');
                         const headerProfilePhoto = document.getElementById('profile-photo-section')
@@ -218,7 +342,7 @@
                         document.getElementById("bioProfile").value = userData.bio;
                         document.getElementById("location").value = userData.location;
                         document.getElementById("website").value = userData.website;
-                        document.getElementById("dob").value = userData.dob || "";
+                        document.getElementById("dob").value = userData.date_of_birth || "";
                         document.getElementById("userName").value = userData.user_name;
                     } else if (response.status === 401) {
                         console.error('Unauthorized. Please login again.');
