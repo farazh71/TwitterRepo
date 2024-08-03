@@ -4,6 +4,7 @@
 <head>
     <title>Twitter Landing Page</title>
     <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>/assets/css/main_style.css">
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>/assets/css/model_style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
         integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -28,6 +29,8 @@
             <div id="profile-photo-section"></div>
             <!-- <img src="user-image.png" alt="User Image"> -->
             <button class="action-btn">Tweet</button>
+            <!-- Include the modal view -->
+            <?= view('modal_view'); ?>
             <div id="action-items" onclick="toggleDropdown()"></div>
             <div class="relative">
                 <div id="dropdown-menu" class="dropdown hidden">
@@ -96,23 +99,24 @@
                     Website: <input type="text" value="" id="website">
                     Birthday: <input type="date" value="" id="dob">
                     <input type="text" class="hidden" value="" id="userName">
+                    <input type="text" class="hidden" value="" id="userId">
                 </div>
             </div>
 
         </div>
         <div class="tweets-section">
-            <h3>Tweets</h3>
-            <div>
-                POST
+            <div class="navbar">
+                <div class="tweets active">Tweets</div>
+
+                <div class="tweets">Tweets & replies</div>
             </div>
         </div>
         <div class="follow-section">
             <div class="follow-heading">
                 <p>
                 <h2 class="inline">Who to follow</h2> <span class="v-super"> . </span>
-                <button id="refrestFollowList"
-                    class="anchor-btn v-bottom">Refresh</button> <span class="v-super">.</span> <button
-                    class="anchor-btn v-bottom"> View all</button></h3>
+                <button id="refrestFollowList" class="anchor-btn v-bottom">Refresh</button> <span
+                    class="v-super">.</span> <button class="anchor-btn v-bottom"> View all</button></h3>
             </div>
             <div id="follow-body">
                 <!-- <div class="follow-card">
@@ -248,17 +252,18 @@
                         throw new Error('Network response was not ok');
                     }
 
-                    followUserList = await response.json();  
+                    followUserList = await response.json();
+
                     renderFollowList();
 
                 } catch (error) {
                     console.error('Error fetching users:', error);
                 }
             }
-      
-            function removeFromFollowList(id){
+
+            function removeFromFollowList(id) {
                 const filteredUsers = followUserList.filter(user => user.user_id !== id);
-                followUserList = [...filteredUsers]; 
+                followUserList = [...filteredUsers];
                 renderFollowList(followUserList);
             }
 
@@ -267,15 +272,19 @@
                 fetchFollowUsers();
             });
 
-            function renderFollowList (){
+            function renderFollowList() {
                 const followSection = document.getElementById("follow-body");
+                const existingUserId = document.getElementById("userId").value;
+                console.log(followUserList, existingUserId, "asfknfknsk")
                 followSection.innerHTML = ""; // Clear any existing content
                 followUserList?.forEach(user => {
+                    if (user.user_id !== existingUserId) {
                         const followCard = document.createElement("div");
                         followCard.classList.add("follow-card");
 
                         const profilePhoto = document.createElement("div");
                         profilePhoto.id = "follow-photo-section";
+                        profilePhoto.innerHTML = `<i class="fa-brands fa-twitter fa-2xl"></i>`
                         profilePhoto.style.backgroundImage = `url(${user.profile_photo_url})`;
 
                         const userList = document.createElement("div");
@@ -300,7 +309,8 @@
                         followCard.appendChild(closeBtn);
 
                         followSection.appendChild(followCard);
-                    });
+                    }
+                });
             }
             async function fetchUserData() {
                 try {
@@ -317,12 +327,15 @@
 
                     if (response.ok) {
                         const userData = await response.json();
+
                         const coverPictureDiv = document.getElementById('cover-picture');
                         const profilePictureDiv = document.getElementById('profile-picture');
                         const headerProfilePhoto = document.getElementById('profile-photo-section')
+                        const userId = document.getElementById('userId')
                         const userName = document.getElementById('user-name')
                         const bio = document.getElementById('bio')
-                        const joinedDate = document.getElementById('joining-date')
+                        const joinedDate = document.getElementById('joining-date');
+                        const profilePhoto = document.getElementById("tweet-profile-photo");
                         if (userData.cover_photo_url) {
                             coverPictureDiv.style.backgroundImage = `url(${userData.cover_photo_url})`;
                         } else {
@@ -331,12 +344,15 @@
                         if (userData.profile_photo_url) {
                             profilePictureDiv.style.backgroundImage = `url(${userData.profile_photo_url})`;
                             headerProfilePhoto.style.backgroundImage = `url(${userData.profile_photo_url})`;
+                            profilePhoto.innerHTML = "";
+                            profilePhoto.style.backgroundImage = `url(${userData.profile_photo_url})`;
                         } else {
                             profilePictureDiv.style.backgroundImage = 'none';
                             headerProfilePhoto.style.backgroundImage = 'none';
                         }
                         userName.innerText = userData.Name;
                         bio.innerText = userData.bio;
+                        userId.value = userData.user_id;
                         joinedDate.innerText = formatDate(userData.created_at);
                         document.getElementById("firstNameLastName").value = userData.Name;
                         document.getElementById("bioProfile").value = userData.bio;

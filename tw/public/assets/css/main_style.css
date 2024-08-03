@@ -213,8 +213,8 @@ body {
 }
 
 #follow-photo-section {
-  width: 60px;
-  height: 60px;
+  width: 70px;
+  height: 70px;
   margin: 0;
 }
 
@@ -222,7 +222,6 @@ body {
 #follow-photo-section {
   border-radius: 50%;
   background: #0000ff14;
-
   background-repeat: round;
   cursor: pointer;
 }
@@ -315,7 +314,7 @@ body {
   display: flex;
 }
 .profile-section {
-  width: 25%;
+  width: 20%;
   padding: 20px;
 }
 
@@ -456,4 +455,26 @@ body {
   padding: 5px 20px;
   border-radius: 20px;
   font-weight: 600;
+}
+
+.tweets-section{
+    background: #fff;
+    padding: 15px;
+    margin: 10px;
+}
+
+.tweets-section .navbar{
+    display: flex;
+    flex-direction: row;
+    border-bottom: 1px solid #e1e4e8;
+    justify-content: normal;
+}
+
+.tweets-section .navbar .tweets{
+    padding: 10px 20px 10px 10px;
+    font-weight: bold;
+}
+
+.tweets-section .navbar .tweets.active{
+    color: #1da1f2;
 }
