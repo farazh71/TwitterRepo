@@ -24,6 +24,10 @@
                 <input id="modal-audio-file" type="file" accept="audio/*" style="display: none;" />
             </div>
         </div>
+        <div id="preview-section">
+            <p id="preview-text" class="hidden">Preview:</p>
+            <div id="media-preview" class="media-preview hidden"></div>
+        </div>
         <div class="modal-actions">
             <button class="cancel-btn">Cancel</button>
             <button class="tweet-btn">Tweet</button>
@@ -42,48 +46,48 @@
         const tweetBtn = document.querySelector(".tweet-btn");
 
         // Open the modal
-        btn.onclick = function() {
+        btn.onclick = function () {
             modal.style.display = "block";
         }
 
         // Close the modal when the user clicks on <span> (x)
-        span.onclick = function() {
+        span.onclick = function () {
             modal.style.display = "none";
         }
 
         // Close the modal when the user clicks on the cancel button
-        cancelBtn.onclick = function() {
+        cancelBtn.onclick = function () {
             modal.style.display = "none";
         }
 
         // Close the modal when the user clicks anywhere outside of the modal
-        window.onclick = function(event) {
+        window.onclick = function (event) {
             if (event.target === modal) {
                 modal.style.display = "none";
             }
         }
 
         // Update the word counter as the user types
-        tweetText.addEventListener('input', function() {
+        tweetText.addEventListener('input', function () {
             const currentLength = tweetText.value.length;
             wordCounter.textContent = `${currentLength}/240`;
         });
 
         // File upload handlers
-        document.getElementById('modal-video-file').addEventListener('change', function() {
+        document.getElementById('modal-video-file').addEventListener('change', function () {
             resetOtherFileInputs('modal-video-file');
         });
 
-        document.getElementById('modal-image-file').addEventListener('change', function() {
+        document.getElementById('modal-image-file').addEventListener('change', function () {
             resetOtherFileInputs('modal-image-file');
         });
 
-        document.getElementById('modal-audio-file').addEventListener('change', function() {
+        document.getElementById('modal-audio-file').addEventListener('change', function () {
             resetOtherFileInputs('modal-audio-file');
         });
 
         // Handle tweet button click
-        tweetBtn.addEventListener('click', function() {
+        tweetBtn.addEventListener('click', function () {
             if (tweetText.value.trim() === '') {
                 alert('Tweet text is mandatory.');
                 return;
@@ -122,6 +126,50 @@
             });
         }
     });
+    // Handle file input changes
+    function handleFileChange(event) {
+        const file = event.target.files[0];
+        const previewContainer = document.getElementById('media-preview');
+        const previewText = document.getElementById('preview-text');
+
+        // Clear previous preview
+        previewContainer.innerHTML = '';
+        previewContainer.classList.remove("hidden");
+        previewText.classList.remove("hidden");
+
+        if (file) {
+            const fileType = file.type;
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                let mediaElement;
+
+                if (fileType.startsWith('image/')) {
+                    mediaElement = document.createElement('img');
+                    mediaElement.src = e.target.result;
+                } else if (fileType.startsWith('video/')) {
+                    mediaElement = document.createElement('video');
+                    mediaElement.src = e.target.result;
+                    mediaElement.controls = true; // Add controls for video playback
+                } else if (fileType.startsWith('audio/')) {
+                    mediaElement = document.createElement('audio');
+                    mediaElement.src = e.target.result;
+                    mediaElement.controls = true; // Add controls for audio playback
+                }
+
+                if (mediaElement) {
+                    previewContainer.appendChild(mediaElement);
+                }
+            };
+
+            reader.readAsDataURL(file);
+        }
+    }
+
+    // Attach event listeners to file inputs
+    document.getElementById('modal-image-file').addEventListener('change', handleFileChange);
+    document.getElementById('modal-video-file').addEventListener('change', handleFileChange);
+    document.getElementById('modal-audio-file').addEventListener('change', handleFileChange);
 
     function uploadTweetWithMedia(file, tweetText, mediaType) {
         var formData = new FormData();

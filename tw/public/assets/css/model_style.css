@@ -124,3 +124,29 @@
 float: right;
     color: grey;
 }
+
+.image-upload {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.media-preview {
+    margin-top: 10px;
+    width: 100px; 
+    height: 100px; 
+    background-color: #f0f0f0;
+    border: 1px solid #ccc; 
+    border-radius: 4px; 
+    overflow: hidden;
+}
+
+.media-preview img,.media-preview video , .media-preview audio{
+    width: 100%; /* Ensure image fits within the preview container */
+    height: auto;
+}
+
+#preview-section{
+    margin-left: 15%;
+    margin-bottom: 20px;
+}
