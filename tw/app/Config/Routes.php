@@ -18,5 +18,7 @@ $routes->get('uploads/(:segment)', 'FileController::serve/$1');
 $routes->post('updateProfile', 'UserController::updateProfile');
 $routes->get('user/fetchFollowUsers', 'FollowUsersController::fetchFollowUsers');
 $routes->post('tweet/upload', 'TweetController::uploadTweet');
+$routes->get('tweet-list', 'TweetFetchController::index');
+$routes->get('tweet-fetch-more/(:num)', 'TweetFetchController::loadMore/$1');
 
 

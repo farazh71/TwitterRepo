@@ -5,6 +5,7 @@
     <title>Twitter Landing Page</title>
     <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>/assets/css/main_style.css">
     <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>/assets/css/model_style.css">
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>/assets/css/tweet_list_styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
         integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -107,8 +108,10 @@
         <div class="tweets-section">
             <div class="navbar">
                 <div class="tweets active">Tweets</div>
-
                 <div class="tweets">Tweets & replies</div>
+            </div>
+            <div id="tweet-post-list">
+            <?= view('tweet_list'); ?>
             </div>
         </div>
         <div class="follow-section">
@@ -119,14 +122,6 @@
                     class="v-super">.</span> <button class="anchor-btn v-bottom"> View all</button></h3>
             </div>
             <div id="follow-body">
-                <!-- <div class="follow-card">
-                    <div id="follow-photo-section"></div>
-                    <div id="follow-user-list">
-                        <h3 class="follow-user-name">Dr Areeba Shakeel</h3>
-                        <button class="follow-btn">Follow</button>
-                    </div>
-                    <div id="follow-remove-user"></div>
-                </div> -->
             </div>
         </div>
 

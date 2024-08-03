@@ -1,0 +1,54 @@
+.tweet-list-container {
+  display: flex;
+  margin-bottom: 20px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.tweet-listing-profile-photo {
+  margin-right: 15px;
+}
+
+.tweet-listing-profile-photo img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+.tweet-content {
+  flex: 1;
+}
+
+.tweet-content .tweetedByName {
+  font-weight: bold;
+}
+
+.tweet-content .timeAgo {
+  color: #555;
+  margin-left: 10px;
+}
+
+.tweet-text-content {
+  margin-top: 5px;
+}
+
+.tweet-media-content img {
+  max-width: 100%;
+}
+
+#load-more {
+  display: block;
+  margin: 20px auto;
+  padding: 10px 20px;
+  border: none;
+  background-color: #1da1f2;
+  color: white;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#load-more:disabled {
+  background-color: #ccc;
+}
