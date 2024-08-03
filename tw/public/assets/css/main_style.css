@@ -59,6 +59,8 @@ body {
   background: none;
   font-weight: bold;
   margin: 5px;
+  border-radius: 20px;
+  padding: 10px 20px;
 }
 .blue-clr {
   color: #1da1f2;

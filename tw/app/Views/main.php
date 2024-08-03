@@ -168,6 +168,7 @@
                         showSuccessMessage("Your account has been successfully updated!")
                         document.getElementById("save-profile-changes").classList.add("hidden");
                         document.getElementById("edit-profile-btn").classList.remove("hidden");
+                        closeUpdateBox();
                     } else if (this.status === 409) { // HTTP status code for conflict (duplicate entry)
                         showSuccessMessage("Unable to save data");
                     } else {

@@ -19,7 +19,7 @@ class TweetFetchModel extends Model
    
     protected $useTimestamps = false;
 
-    public function getTweetsWithUserDetails($limit = 10, $offset = 0)
+    public function getTweetsWithUserDetails($limit = 5, $offset = 0)
     {
      
         return $this->select('Tweets.*, Users.profile_photo_url, Users.Name')

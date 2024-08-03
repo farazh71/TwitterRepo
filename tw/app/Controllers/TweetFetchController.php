@@ -37,7 +37,7 @@ class TweetFetchController extends BaseController
         }
 
         $tweetModel = new TweetFetchModel();
-        $data['tweets'] = $tweetModel->getTweetsWithUserDetails(10);
+        $data['tweets'] = $tweetModel->getTweetsWithUserDetails(3);
 
         return view('tweet_list', $data);
     }
@@ -63,7 +63,7 @@ class TweetFetchController extends BaseController
         }
 
         $tweetModel = new TweetFetchModel();
-        $tweets = $tweetModel->getTweetsWithUserDetails(10, $offset);
+        $tweets = $tweetModel->getTweetsWithUserDetails(3, $offset);
 
         return $this->response->setJSON($tweets);
     }
