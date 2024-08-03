@@ -327,6 +327,7 @@ body {
   background: #fff;
   padding: 15px;
   margin: 10px;
+  height: 100%;
 }
 .inline {
   display: inline;

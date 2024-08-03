@@ -5,7 +5,7 @@
     <title>Twitter Landing Page</title>
     <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>/assets/css/main_style.css">
     <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>/assets/css/model_style.css">
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>/assets/css/tweet_list_styles.css">
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>/assets/css/tweet_list_style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
         integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
