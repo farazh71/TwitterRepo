@@ -73,6 +73,7 @@
         }
 
         function showSuccessMessage() {
+            const successMessage = document.getElementById("successMessage");
             successMessage.style.display = 'block';
         }
         document.addEventListener('DOMContentLoaded', function () {

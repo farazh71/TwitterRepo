@@ -55,9 +55,9 @@ function renderTweets(tweets) {
             <div class="tweet-text-content">${tweet.content}</div>
             <div class="tweet-media-content">
                 ${
-                  tweet.media_type
+                  tweet.media_type === 'image'
                     ? `<img src="${tweet.media_url}" alt="Tweet media" style="width: 100%; height: 100%;">`
-                    : ""
+                    : `<video src="${tweet.media_url}" controls alt="Tweet media" style="width: 100%; height: 100%;"></video>`
                 }
             <div class="tweet-footer">
                 <button class="comment-button" data-tweet-id="${

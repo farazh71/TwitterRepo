@@ -4,6 +4,7 @@
 <head>
     <title>Twitter Landing Page</title>
     <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>/assets/css/main_style.css">
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>/assets/css/common_style.css">
     <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>/assets/css/model_style.css">
     <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>/assets/css/tweet_list_style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
@@ -76,10 +77,10 @@
         <div class="edit-profile">
             <button class="default-btn" id="edit-profile-btn" onclick="toggleEditProfileForm(true)">Edit
                 profile</button>
-            <div id="save-profile-changes" class="hidden">
+            <!-- <div id="save-profile-changes" class="hidden">
                 <button class="info-btn black-clr" onclick="closeUpdateBox()">Cancel</button>
                 <button class="info-btn blue-clr" onclick="submitData()">Save changes</button>
-            </div>
+            </div> -->
         </div>
     </div>
     <div class="main-body">
@@ -94,15 +95,28 @@
             </div>
             <div id="edit-profile" class="hidden">
                 <div id="updateProfileForm" class="update-profile-form">
-                    Name: <input type="text" value="" id="firstNameLastName">
-                    Bio: <input type="text" value="" id="bioProfile">
-                    Location: <input type="text" value="" id="location">
-                    Website: <input type="text" value="" id="website">
-                    Birthday: <input type="date" value="" id="dob">
+                    <label for="firstNameLastName">Name:</label>
+                    <input type="text" value="" id="firstNameLastName">
+
+                    <label for="bioProfile">Bio:</label>
+                    <input type="text" value="" id="bioProfile">
+
+                    <label for="location">Location:</label>
+                    <input type="text" value="" id="location">
+
+                    <label for="website">Website:</label>
+                    <input type="text" value="" id="website">
+
+                    <label for="dob">Birthday:</label>
+                    <input type="date" value="" id="dob">
+
                     <input type="text" class="hidden" value="" id="userName">
                     <input type="text" class="hidden" value="" id="userId">
+                    <button class="submitBtn" onclick="submitData()">Save changes</button>
+                    <button class="cancelBtn" onclick="closeUpdateBox()">Cancel</button>
                 </div>
             </div>
+
 
         </div>
         <div class="tweets-section">
@@ -135,8 +149,8 @@
     <script>
         let followUserList = [];
         function closeUpdateBox() {
-            document.getElementById("save-profile-changes").classList.add("hidden");
-            document.getElementById("edit-profile-btn").classList.remove("hidden");
+            // document.getElementById("save-profile-changes").classList.add("hidden");
+            document.getElementById("edit-profile-btn").classList.remove("no-action-btn");
             toggleEditProfileForm(false);
         }
 
@@ -164,8 +178,8 @@
                     hideLoading();
                     if (this.status === 200) {
                         showSuccessMessage("Your account has been successfully updated!")
-                        document.getElementById("save-profile-changes").classList.add("hidden");
-                        document.getElementById("edit-profile-btn").classList.remove("hidden");
+                        // document.getElementById("save-profile-changes").classList.add("hidden");
+                        document.getElementById("edit-profile-btn").classList.remove("no-action-btn");
                         closeUpdateBox();
                     } else if (this.status === 409) { // HTTP status code for conflict (duplicate entry)
                         showSuccessMessage("Unable to save data");
@@ -187,28 +201,30 @@
         }
 
         function showSuccessMessage(message) {
+            const successMessage = document.getElementById("successMessage");
             successMessage.style.display = 'block';
             successMessage.innerText = message;
             setTimeout(() => {
                 successMessage.style.display = 'none';
-            }, 3000);
+                location.href = "main";
+            }, 500);
         }
         function toggleEditProfileForm(editProfile) {
             const viewProfile = document.getElementById("view-profile");
             const editProfileSection = document.getElementById("edit-profile");
             const editProfileBtn = document.getElementById("edit-profile-btn");
-            const saveProfile = document.getElementById("save-profile-changes");
+            // const saveProfile = document.getElementById("save-profile-changes");
 
             if (editProfile) {
                 viewProfile.classList.add("hidden");
                 editProfileSection.classList.remove("hidden");
-                editProfileBtn.classList.add("hidden");
-                saveProfile.classList.remove("hidden");
+                editProfileBtn.classList.add("no-action-btn");
+                // saveProfile.classList.remove("hidden");
             } else {
                 viewProfile.classList.remove("hidden");
                 editProfileSection.classList.add("hidden");
-                editProfileBtn.classList.remove("hidden");
-                saveProfile.classList.add("hidden");
+                editProfileBtn.classList.remove("no-action-btn");
+                // saveProfile.classList.add("hidden");
             }
         }
         function toggleDropdown() {
@@ -312,7 +328,7 @@
                     const token = localStorage.getItem('jwtToken');
 
                     const response = await fetch(`${baseUrl}/user/data`, {
-                        
+
                         method: 'GET',
                         headers: {
                             'Authorization': `Bearer ${token}`, // Include the JWT token in the Authorization header

@@ -192,6 +192,7 @@
                 if (xhr.status === 201) { // Changed to 201 for Created
                     alert('Tweet uploaded successfully.');
                     document.getElementById('tweet-modal').style.display = 'none';
+                    location.href = 'main';
                 } else if (xhr.status === 401) {
                     alert('Unauthorized. Please log in again.');
                     window.location.href = 'login';
