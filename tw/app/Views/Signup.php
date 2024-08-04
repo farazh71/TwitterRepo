@@ -158,7 +158,7 @@
         }
 
         function showEndForm() {
-            userObj.name = nameInput.value;
+            userObj.Name = nameInput.value;
             userObj.phone_or_email = phoneInput.value;
             toggleForms();
             nextBtn.classList.add("hidden");
