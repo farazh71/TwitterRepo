@@ -66,7 +66,7 @@
             <div class="extra-options">
                 <button type="submit">Log in</button>
                 <label><input type="checkbox">Remember me</label>
-                <a href="#">Forgot password?</a>
+                <a href="#" class="disabled">Forgot password?</a>
             </div>
         </form>
         <p>New to Twitter? <a href="./signup">Sign up now >></a></p>

@@ -234,7 +234,7 @@
             async function fetchFollowUsers() {
                 const token = localStorage.getItem('jwtToken');
                 try {
-                    const response = await fetch('http://localhost:8081/user/fetchFollowUsers', {
+                    const response = await fetch(`${baseUrl}/user/fetchFollowUsers`, {
                         method: 'GET',
                         headers: {
                             'Authorization': `Bearer ${token}`, // Include the JWT token in the Authorization header
@@ -311,7 +311,8 @@
                     // Retrieve the JWT token from localStorage
                     const token = localStorage.getItem('jwtToken');
 
-                    const response = await fetch('http://localhost:8081/user/data', {
+                    const response = await fetch(`${baseUrl}/user/data`, {
+                        
                         method: 'GET',
                         headers: {
                             'Authorization': `Bearer ${token}`, // Include the JWT token in the Authorization header

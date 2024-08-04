@@ -119,9 +119,7 @@ nav ul li a {
     appearance: none;
     margin-right: 10px;
     border: 1px solid #c0c0c0;
-    /* Light grey border to simulate default look */
     border-radius: 3px;
-    background-color: #D8D8D8;
     position: relative;
     cursor: pointer;
     display: inline-block;
@@ -130,30 +128,25 @@ nav ul li a {
 
 .extra-options input[type="checkbox"]:focus {
     outline: none;
-    /* Remove the outline when focused */
 }
 
 .extra-options input[type="checkbox"]:checked {
-    background-color: #D8D8D8;
-    /* Background color for the checked state */
     border-color: #c0c0c0;
-    /* Ensure the border color stays consistent */
 }
 
 .extra-options input[type="checkbox"]:checked::after {
     content: "";
     position: absolute;
-    left: 4px;
-    top: 1px;
+    left: 7px;
+    top: 2px;
     width: 5px;
     height: 10px;
-    border: solid black;
+    border: solid #1da1f2;
     border-width: 0 2px 2px 0;
     transform: rotate(45deg);
     display: inline-block;
     vertical-align: middle;
 }
-
 
 .login-container button {
     padding: 10px 20px;
@@ -179,4 +172,8 @@ nav ul li a {
     color: #1da1f2;
     margin-right: 5px;
     font-size: 20px;
+}
+
+.disabled {
+    cursor: none;
 }
