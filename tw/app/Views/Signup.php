@@ -45,7 +45,7 @@
         .success-message {
             display: none;
             position: fixed;
-            top: 20%;
+            top: 5%;
             left: 50%;
             transform: translate(-50%, -50%);
             background: #dff0d8;
