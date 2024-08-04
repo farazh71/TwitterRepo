@@ -11,7 +11,7 @@
     <div class="container">
         <div class="left-section">
             <ul>
-                <li><i class="fa-solid fa-magnifying-glass icon-style"></i> Follow your interests.</li>
+                <li><i    class="fa-solid fa-magnifying-glass icon-style"></i> Follow your interests.</li>
                 <li><i class="fa-solid fa-user-group icon-style"></i> Hear what people are talking about.</li>
                 <li><i class="fa-regular fa-comment icon-style"></i> Join the conversation.</li>
             </ul>
