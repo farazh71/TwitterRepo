@@ -112,6 +112,7 @@ body {
   border: 1px solid #1da1f2;
   border-radius: 20px;
   padding: 10px;
+  cursor: pointer;
 }
 
 .action-btn {
@@ -131,6 +132,7 @@ body {
   padding: 10px;
   font-weight: 550;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .width-100 {

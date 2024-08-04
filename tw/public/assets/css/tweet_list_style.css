@@ -196,4 +196,22 @@
     font-size: 14px;
 }
 
+.tweet-footer .comment-button {
+    background: none;
+    border: none;
+    color: #1da1f2;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.tweet-footer .comment-button i {
+    margin-right: 5px;
+}
+
+.tweet-footer .comment-button span {
+    font-size: 14px;
+}
+
   

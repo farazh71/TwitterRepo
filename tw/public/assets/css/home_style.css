@@ -63,6 +63,7 @@ button {
   color: #1da1f2;
   border: 1px solid #1da1f2;
   padding: 6px 0px;
+  cursor: pointer;
 }
 
 .action-btn {
@@ -111,4 +112,5 @@ button {
   padding: 10px;
   font-weight: 550;
   text-decoration: none;
+  cursor: pointer;
 }

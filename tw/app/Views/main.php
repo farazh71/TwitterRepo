@@ -117,7 +117,7 @@
                 <p>
                 <h2 class="inline">Who to follow</h2> <span class="v-super"> . </span>
                 <button id="refrestFollowList" class="anchor-btn v-bottom">Refresh</button> <span
-                    class="v-super">.</span> <button class="anchor-btn v-bottom"> View all</button></h3>
+                    class="v-super">.</span> <button class="disabled anchor-btn v-bottom"> View all</button></h3>
             </div>
             <div id="follow-body">
             </div>

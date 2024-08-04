@@ -61,6 +61,7 @@ body {
   margin: 5px;
   border-radius: 20px;
   padding: 10px 20px;
+  cursor: pointer;
 }
 .blue-clr {
   color: #1da1f2;
@@ -99,6 +100,7 @@ body {
   display: flex;
   justify-content: space-between;
   background: #fff;
+  padding: 5px;
 }
 
 .left-nav,
@@ -148,16 +150,13 @@ body {
   border: 1px solid #7a6e6e;
   border-radius: 20px;
   font-weight: 700;
+  cursor: pointer;
 }
 
 .left-nav {
   display: flex;
   flex-direction: row;
-  /* Align items horizontally */
   justify-content: space-around;
-  /* Space out items */
-  border-bottom: 1px solid #e1e4e8;
-  /* Optional: bottom border */
 }
 
 .left-nav a {
@@ -416,6 +415,7 @@ body {
   border: none;
   font-size: medium;
   font-weight: 500;
+  cursor: pointer;
 }
 
 .follow-card {
@@ -438,6 +438,7 @@ body {
 
 #follow-remove-user {
   width: 10%;
+  cursor: pointer;
 }
 #follow-remove-user:after {
   display: inline-block;
@@ -462,6 +463,7 @@ body {
   padding: 5px 20px;
   border-radius: 20px;
   font-weight: 600;
+  cursor: none;
 }
 
 .tweets-section {
@@ -482,6 +484,12 @@ body {
   font-weight: bold;
 }
 
-.tweets-section .navbar .tweets.active,.tweet-clr {
+.tweets-section .navbar .tweets.active,
+.tweet-clr {
   color: #1da1f2;
+}
+
+.disabled {
+  cursor: none !important;
+  color: grey !important;
 }
