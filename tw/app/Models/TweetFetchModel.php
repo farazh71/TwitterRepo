@@ -19,12 +19,26 @@ class TweetFetchModel extends Model
    
     protected $useTimestamps = false;
 
-    public function getTweetsWithUserDetails($limit = 5, $offset = 0)
+    public function getTweetsWithUserDetails($limit = 5, $offset = 0, $userId)
     {
-     
-        return $this->select('Tweets.*, Users.profile_photo_url, Users.Name')
-                    ->join('Users', 'Users.user_id = Tweets.user_id')
-                    ->orderBy('Tweets.created_at', 'DESC')
-                    ->findAll($limit, $offset);
+        $builder = $this->db->table('Tweets')
+            ->select('Tweets.*, Users.profile_photo_url, Users.Name, COUNT(Likes.tweet_id) as like_count')
+            ->join('Users', 'Users.user_id = Tweets.user_id')
+            ->join('Likes', 'Likes.tweet_id = Tweets.tweet_id', 'left')
+            ->groupBy('Tweets.tweet_id')
+            ->orderBy('Tweets.created_at', 'DESC')
+            ->limit($limit, $offset);
+
+        $tweets = $builder->get()->getResultArray();
+
+        // Check if the user has liked each tweet
+        foreach ($tweets as &$tweet) {
+            $tweet['liked'] = $this->db->table('Likes')
+                ->where('tweet_id', $tweet['tweet_id'])
+                ->where('user_id', $userId)
+                ->countAllResults() > 0;
+        }
+
+        return $tweets;
     }
 }

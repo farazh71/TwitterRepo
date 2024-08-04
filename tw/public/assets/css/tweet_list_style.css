@@ -18,6 +18,7 @@
     cursor: pointer;
     margin-right: 3%;
     margin-top: 10px;
+    padding-bottom: 10px;
 }
 
 .tweet-listing-profile-photo {
@@ -149,3 +150,27 @@
 .submit-comment:hover {
     background-color: #0d95e8;
 }
+
+
+.tweet-footer .like-button {
+    background: none;
+    border: none;
+    color: #1da1f2; /* Twitter blue */
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+  }
+  
+  .tweet-footer .like-button.liked {
+    color: #e0245e; /* Twitter like red */
+  }
+  
+  .tweet-footer .like-button i {
+    margin-right: 5px;
+  }
+  
+  .tweet-footer .like-button span {
+    font-size: 14px;
+  }
+  

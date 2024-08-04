@@ -71,8 +71,8 @@ function renderTweets(tweets) {
                 }">
                     <i class="fa fa-retweet"></i> Retweet
                 </button>
-                <button class="like-button" data-tweet-id="${tweet.tweet_id}">
-                    <i class="fa-solid fa-heart"></i> Like
+                <button class="like-button ${tweet.liked ? 'liked' : ''}" data-tweet-id="${tweet.tweet_id}">
+                    <i class="fa-solid fa-heart"></i> Like ${tweet.like_count}
                 </button>
             </div>
              <div class="comment-section" id="comment-section-${
@@ -115,8 +115,51 @@ function renderTweets(tweets) {
     });
   });
 
+  document.querySelectorAll(".like-button").forEach((button) => {
+    button.addEventListener("click", (e) => {
+      const tweetId = e.target.dataset.tweetId;
+      toggleLike(tweetId);
+    });
+  });
 }
 
+async function toggleLike(tweetId) {
+    const token = localStorage.getItem("jwtToken");
+    if (!token) {
+      console.error("No JWT token found in localStorage.");
+      return;
+    }
+  
+    try {
+      const response = await fetch(`${baseUrl}/tweet/like`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ tweet_id: tweetId }),
+      });
+  
+      if (!response.ok) {
+        const error = await response.text();
+        throw new Error(`Network response was not ok: ${error}`);
+      }
+  
+      console.log('Like toggled successfully.');
+  
+      const likeButton = document.querySelector(`.like-button[data-tweet-id="${tweetId}"]`);
+      const isLiked = likeButton.classList.toggle('liked');
+      const likeCountElem = likeButton.querySelector('span');
+  
+      let likeCount = parseInt(likeButton.textContent.match(/\d+/)[0]);
+      likeCount = isLiked ? likeCount + 1 : likeCount - 1;
+      likeButton.innerHTML = `<i class="fa-solid fa-heart"></i> Like ${likeCount}`;
+    } catch (error) {
+      console.error('Error toggling like:', error);
+    }
+  }
+
+  
 function formatTimeAgo(timestamp) {
   const now = new Date();
   const then = new Date(timestamp);

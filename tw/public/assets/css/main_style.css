@@ -482,6 +482,6 @@ body {
   font-weight: bold;
 }
 
-.tweets-section .navbar .tweets.active {
+.tweets-section .navbar .tweets.active,.tweet-clr {
   color: #1da1f2;
 }

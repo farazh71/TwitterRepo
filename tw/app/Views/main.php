@@ -20,7 +20,7 @@
             <a href="#"><i class="fa-solid fa-envelope icon-style"></i> Messages</a>
         </div>
         <div class="middle-nav">
-            <img src="twitter-icon.png" alt="Twitter Icon">
+            <i class="fa-brands fa-twitter fa-2xl tweet-clr"></i>
         </div>
         <div class="right-nav">
             <div class="search-container">
