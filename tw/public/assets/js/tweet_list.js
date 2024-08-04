@@ -1,7 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   loadMoreTweets(0);
 });
-  
 async function loadMoreTweets(offset) {
   const token = localStorage.getItem("jwtToken");
   if (!token) {
@@ -66,12 +65,14 @@ function renderTweets(tweets) {
                 }">
                     <i class="fa-solid fa-comment"></i> Comment
                 </button>
-                <button class="retweet-button" data-tweet-id="${
-                  tweet.tweet_id
-                }">
-                    <i class="fa fa-retweet"></i> Retweet
+            <button class="retweet-button ${
+              tweet.is_retweeted ? "retweeted" : ""
+            }" data-tweet-id="${tweet.tweet_id}">
+                    <i class="fa fa-retweet"></i> Retweet ${tweet.retweet_count}
                 </button>
-                <button class="like-button ${tweet.liked ? 'liked' : ''}" data-tweet-id="${tweet.tweet_id}">
+                <button class="like-button ${
+                  tweet.liked ? "liked" : ""
+                }" data-tweet-id="${tweet.tweet_id}">
                     <i class="fa-solid fa-heart"></i> Like ${tweet.like_count}
                 </button>
             </div>
@@ -82,7 +83,7 @@ function renderTweets(tweets) {
                     <div class="comment-section">
                         <textarea class="comment-input" placeholder="Write a comment..."></textarea>
                         <button class="submit-comment" data-tweet-id="${
-                        tweet.tweet_id
+                          tweet.tweet_id
                         }">Submit</button>
                     </div>
             </div>
@@ -121,45 +122,92 @@ function renderTweets(tweets) {
       toggleLike(tweetId);
     });
   });
+
+  document.querySelectorAll(".retweet-button").forEach((button) => {
+    button.addEventListener("click", (e) => {
+      const tweetId = e.target.dataset.tweetId;
+      retweet(tweetId);
+    });
+  });
+}
+
+async function retweet(tweetId) {
+  const token = localStorage.getItem("jwtToken");
+  if (!token) {
+    console.error("No JWT token found in localStorage.");
+    return;
+  }
+
+  try {
+    const response = await fetch(`${baseUrl}/retweet`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ tweet_id: tweetId }),
+    });
+
+    if (!response.ok) {
+      const error = await response.text();
+      throw new Error(`Network response was not ok: ${error}`);
+    }
+
+    console.log("Retweet successful.");
+
+    // Update the UI to reflect the new retweet status
+    const retweetButton = document.querySelector(
+      `.retweet-button[data-tweet-id="${tweetId}"]`
+    );
+    const retweetCountElem = retweetButton.querySelector("span");
+
+    let retweetCount = parseInt(retweetButton.textContent.match(/\d+/)[0]) || 0;
+    retweetButton.innerHTML = `<i class="fa fa-retweet"></i> Retweet ${
+      retweetCount + 1
+    }`;
+  } catch (error) {
+    console.error("Error retweeting:", error);
+  }
 }
 
 async function toggleLike(tweetId) {
-    const token = localStorage.getItem("jwtToken");
-    if (!token) {
-      console.error("No JWT token found in localStorage.");
-      return;
-    }
-  
-    try {
-      const response = await fetch(`${baseUrl}/tweet/like`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ tweet_id: tweetId }),
-      });
-  
-      if (!response.ok) {
-        const error = await response.text();
-        throw new Error(`Network response was not ok: ${error}`);
-      }
-  
-      console.log('Like toggled successfully.');
-  
-      const likeButton = document.querySelector(`.like-button[data-tweet-id="${tweetId}"]`);
-      const isLiked = likeButton.classList.toggle('liked');
-      const likeCountElem = likeButton.querySelector('span');
-  
-      let likeCount = parseInt(likeButton.textContent.match(/\d+/)[0]);
-      likeCount = isLiked ? likeCount + 1 : likeCount - 1;
-      likeButton.innerHTML = `<i class="fa-solid fa-heart"></i> Like ${likeCount}`;
-    } catch (error) {
-      console.error('Error toggling like:', error);
-    }
+  const token = localStorage.getItem("jwtToken");
+  if (!token) {
+    console.error("No JWT token found in localStorage.");
+    return;
   }
 
-  
+  try {
+    const response = await fetch(`${baseUrl}/tweet/like`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ tweet_id: tweetId }),
+    });
+
+    if (!response.ok) {
+      const error = await response.text();
+      throw new Error(`Network response was not ok: ${error}`);
+    }
+
+    console.log("Like toggled successfully.");
+
+    const likeButton = document.querySelector(
+      `.like-button[data-tweet-id="${tweetId}"]`
+    );
+    const isLiked = likeButton.classList.toggle("liked");
+    const likeCountElem = likeButton.querySelector("span");
+
+    let likeCount = parseInt(likeButton.textContent.match(/\d+/)[0]);
+    likeCount = isLiked ? likeCount + 1 : likeCount - 1;
+    likeButton.innerHTML = `<i class="fa-solid fa-heart"></i> Like ${likeCount}`;
+  } catch (error) {
+    console.error("Error toggling like:", error);
+  }
+}
+
 function formatTimeAgo(timestamp) {
   const now = new Date();
   const then = new Date(timestamp);

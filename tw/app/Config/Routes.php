@@ -23,3 +23,4 @@ $routes->get('tweet-fetch-more/(:num)', 'TweetFetchController::loadMore/$1');
 $routes->post('submit-comment', 'CommentController::submitComment');
 $routes->get('get-comments/(:num)', 'CommentController::getComments/$1');
 $routes->post('tweet/like', 'TweetFetchController::toggleLike');
+$routes->post('retweet', 'TweetController::retweet');

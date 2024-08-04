@@ -173,4 +173,27 @@
   .tweet-footer .like-button span {
     font-size: 14px;
   }
+
+  .tweet-footer .retweet-button {
+    background: none;
+    border: none;
+    color: #00ba7c; /* Twitter retweet green */
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.tweet-footer .retweet-button.retweeted {
+    color: #00b894; /* Darker green for retweeted state */
+}
+
+.tweet-footer .retweet-button i {
+    margin-right: 5px;
+}
+
+.tweet-footer .retweet-button span {
+    font-size: 14px;
+}
+
   
