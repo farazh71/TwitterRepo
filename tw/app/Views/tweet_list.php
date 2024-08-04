@@ -9,8 +9,7 @@
 </head>
 
 <body>
-    <div id="tweet-post-list">
-    </div>
+    <div id="tweet-post-list"></div>
     <button id="load-more">Load More</button>
     <script>
         const baseUrl = '<?= base_url() ?>';

@@ -110,9 +110,7 @@
                 <div class="tweets active">Tweets</div>
                 <div class="tweets">Tweets & replies</div>
             </div>
-            <div id="tweet-post-list">
             <?= view('tweet_list'); ?>
-            </div>
         </div>
         <div class="follow-section">
             <div class="follow-heading">
