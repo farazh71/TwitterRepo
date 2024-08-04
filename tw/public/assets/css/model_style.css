@@ -16,7 +16,6 @@
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: rgb(0, 0, 0);
     background-color: rgba(0, 0, 0, 0.4);
 }
 
@@ -42,17 +41,14 @@
 .close-btn:hover,
 .close-btn:focus {
     color: black;
-    text-decoration: none;
-    cursor: pointer;
 }
 
-#tweet-profile-photo{
+#tweet-profile-photo {
     border-radius: 50%;
     background: #0000ff14;
-    background-repeat: round;
     width: 70px;
     height: 70px;
-    margin: 0 10px 0 0;
+    margin-right: 10px;
 }
 
 .profile-photo {
@@ -102,26 +98,34 @@
     color: white;
 }
 
-.modal-header, .modal-body, .modal-uploads{
+.modal-header,
+.modal-body,
+.modal-uploads {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
-.modal-uploads{
-    justify-content: start; 
+
+.modal-uploads {
+    justify-content: start;
     margin-left: 12%;
 }
 
-.video-upload, .image-upload, .audio-upload{
+.video-upload,
+.image-upload,
+.audio-upload {
     padding: 10px;
 }
-#tweet-profile-photo i, #follow-photo-section i{
+
+#tweet-profile-photo i,
+#follow-photo-section i {
     margin-top: 35px;
     color: #1da1f2;
     margin-left: 15px;
 }
-#word-counter{
-float: right;
+
+#word-counter {
+    float: right;
     color: grey;
 }
 
@@ -133,20 +137,22 @@ float: right;
 
 .media-preview {
     margin-top: 10px;
-    width: 100px; 
-    height: 100px; 
+    width: 100px;
+    height: 100px;
     background-color: #f0f0f0;
-    border: 1px solid #ccc; 
-    border-radius: 4px; 
+    border: 1px solid #ccc;
+    border-radius: 4px;
     overflow: hidden;
 }
 
-.media-preview img,.media-preview video , .media-preview audio{
-    width: 100%; /* Ensure image fits within the preview container */
+.media-preview img,
+.media-preview video,
+.media-preview audio {
+    width: 100%;
     height: auto;
 }
 
-#preview-section{
+#preview-section {
     margin-left: 15%;
     margin-bottom: 20px;
 }

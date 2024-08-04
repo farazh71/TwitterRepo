@@ -11,6 +11,15 @@ body {
 
 .left-section {
   flex-basis: 50%;
+  height: 100vh;
+  width: 50vw;
+  background: #1da1f2;
+  color: white;
+  line-height: 100px;
+  display: flex;
+  align-items: center;
+  font-size: 25px;
+  font-family: Helvetica;
 }
 
 .left-section ul {
@@ -19,6 +28,12 @@ body {
 
 .right-section {
   flex-basis: 50%;
+  height: 100vh;
+  width: 50vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Helvetica;
 }
 
 .right-section .header {
@@ -37,32 +52,11 @@ button {
   margin-top: 20px;
 }
 
-.left-section {
-  height: 100vh;
-  width: 50vw;
-  background: #1da1f2;
-  color: white;
-  line-height: 100px;
-  display: flex;
-  align-items: center;
-  font-size: 25px;
-  font-family: Helvetica;
-}
-
-.right-section {
-  height: 100vh;
-  width: 50vw;
-  display: flex;
-  align-items: center;
-  font-family: Helvetica;
-  justify-content: center;
-}
-
 .info-btn {
   background: none;
   color: #1da1f2;
   border: 1px solid #1da1f2;
-  padding: 6px 0px;
+  padding: 6px 0;
   cursor: pointer;
 }
 
@@ -70,7 +64,7 @@ button {
   background-color: #1da1f2;
   color: white;
   border: 0;
-  padding: 7px 0px;
+  padding: 7px 0;
 }
 
 .width-50 {
@@ -93,7 +87,6 @@ button {
   font-size: 27px;
 }
 
-/* new styles by me */
 .icon-style {
   margin-right: 20px;
 }

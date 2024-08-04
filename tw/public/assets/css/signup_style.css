@@ -29,22 +29,7 @@ body {
   max-height: 50px;
 }
 
-/* .header button {
-  position: absolute;
-  right: 0;
-  top: 0;
-  padding: 5px 15px;
-  border: none;
-  border-radius: 20px;
-  background-color: #1da1f2;
-  color: white;
-  font-weight: 900;
-  font-size: 15px;
-  cursor: pointer;
-} */
-
 .title {
-  /* text-align: center; */
   font-size: 30px;
   font-weight: 700;
   margin-bottom: 20px;
@@ -57,28 +42,14 @@ body {
   padding: 10px;
   font-size: 20px;
   border: none;
-  /* Remove the default border */
   border-bottom: 2px solid silver;
-  /* Blue underline */
-  border-radius: 0;
-  /* Remove border-radius for a straight underline */
   outline: none;
-  /* Remove the default outline */
   box-sizing: border-box;
-  /* Include padding and border in the element's total width and height */
 }
 
 .underline-input:focus {
   border-bottom-color: #1da1f2;
-  /* Change the underline color on focus */
 }
-
-/* button {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        } */
 
 #switch {
   color: #1da1f2;
@@ -106,26 +77,26 @@ body {
   margin-bottom: 10px;
 }
 
-.info-btn {
-  background: none;
-  color: #1da1f2;
-  border: 1px solid #1da1f2;
-  border-radius: 20px;
-  padding: 10px;
-  cursor: pointer;
-}
-
+.info-btn,
 .action-btn {
   padding: 10px;
   border: none;
   border-radius: 20px;
+  cursor: pointer;
+}
+
+.info-btn {
+  background: none;
+  color: #1da1f2;
+  border: 1px solid #1da1f2;
+}
+
+.action-btn {
   background-color: #1da1f2;
   color: white;
   font-weight: 900;
   font-size: 15px;
-  cursor: pointer;
 }
-
 
 .landing-login-btn-small {
   border-radius: 20px;
